@@ -25,6 +25,7 @@ MAX_YEAR = 2030
 NON_ECON = 'non-econ'
 ECON = 'econ'
 
+# to improve report format
 class color:
    PURPLE = '\033[95m'
    CYAN = '\033[96m'
@@ -39,58 +40,66 @@ class color:
 
 # reading in all "one-to-one" data e.g. name, official name, ISO2, ISO3, Area, & capital
 # **Limitation** files must be in the format provided by Dr. Stacey
-# takes in the "un_shortlist", "shortlist_capitals" & "shortlist_area" csv files
+# takes in the "un_shortlist"
 # storing and structuring data to be ready for push to dynamodb
 # returns a single table (containing the data referred to above) in JSON/Dict format
-def read_countries(names_file, area_file, capitals_file):
+def read_names(filename):
     first = True
     header = []
     name_info = []
-    fNames = open(names_file, 'r', encoding="utf-8-sig")
-    fArea = open(area_file, 'r', encoding="utf-8-sig")
-    fCapitals = open(capitals_file, 'r', encoding="utf-8-sig")
-    
-    rNames = list(csv.reader(fNames))
-    rArea = list(csv.reader(fArea))
-    rCapitals = list(csv.reader(fCapitals))
 
-    for i in range(1, len(rNames), 1):
-        tmp = {
-            'country': '', 
-            'aliases': {
-                'official': '',
-                'iso3': '',
-                'iso2': ''
-            }, 
-            'area': '', 
-            'capital': '',
-            'languages': '',
-            'population': ''
+    with open(filename, 'r', encoding="utf-8-sig") as file:
+
+        reader = csv.reader(file)
+        for row in reader:
+            tmp = {
+                'country': '', 
+                'aliases': {
+                    'official': '',
+                    'iso3': '',
+                    'iso2': ''
+                }, 
+                'area': '', 
+                'capital': '',
+                'languages': '',
+                'population': ''
             }
+            if (first):
+                first = False
+                header = row
+            else:
+                for i in range(len(row)):
+                    if i == 0:
+                        tmp['aliases']['iso3'] = row[i]
+                    elif i == 1:
+                        tmp['country'] = row[i]
+                    elif i == 2:
+                        tmp['aliases']['official'] = row[i]
+                    elif i == 3:
+                        tmp['aliases']['iso2'] = row[i]
 
-        # getting name information
-        for j in range(0, len(rNames[i]), 1):
-            if j == 0:
-                tmp['aliases']['iso3'] = rNames[i][j]
-            elif j == 1:
-                tmp['country'] = rNames[i][j]
-            elif j == 2:
-                tmp['aliases']['official'] = rNames[i][j]
-            elif j == 3:
-                tmp['aliases']['iso2'] = rNames[i][j]
-        # getting area for each country 
-        if (len(rArea[i]) > 2):
-            if tmp['country'] == rArea[i][1]:
-                tmp['area'] = rArea[i][2]
-        # getting capital of each country
-        if (len(rCapitals[i]) > 2):
-            if tmp['country'] == rCapitals[i][1]:
-                tmp['capital'] = rCapitals[i][2]
-
-        name_info.append(tmp)
+                name_info.append(tmp)
         
     return name_info
 
+# for files with single data following this structure
+# ISO3, Country Name, Data
+# e.g. ISO3, Country Name, Area
+def read_single(filename):
+    first = False
+    header = []
+
+    with open(filename, 'r', encoding="utf-8-sig") as file:
+        reader = csv.reader(file)
+        data = {}
+        next(reader)
+        for row in reader:
+            if (len(row) > 2):
+                data[row[1]] = row[2]
+            elif (len(row) > 1):
+                data[row[1]] = ''
+            
+    return data
 
 # reads the "shortlist_curpop.csv" file
 # splits 'economic' & 'non-economic' data 
@@ -147,12 +156,17 @@ def read_lang(filename):
         return e
 
 
-def combine_non_econ(table, languages, populations):
+def combine_non_econ(table, languages, populations, area, capitals):
+
     for c in table:
         if c['country'] in populations:
             c['population'] = populations[c['country']]
         if c['country'] in languages:
             c['languages'] = languages[c['country']]
+        if c['country'] in area:
+            c['area'] = area[c['country']]
+        if c['country'] in capitals:
+            c['capital'] = capitals[c['country']]
     
     return table
 
@@ -265,7 +279,9 @@ def check_exists(db_client, table_name):
         return False
 
 def create_tables_dict(f_names, f_area, f_caps, f_cur_pop, f_lang, f_gdp):
-        names = read_countries(f_names, f_area, f_caps)
+        names = read_names(f_names)
+        area = read_single(f_area)
+        capitals = read_single(f_caps)
         tables = read_cur_pop(f_cur_pop)
         lang_arr = read_lang(f_lang)
         gdp_arr = read_gdp(f_gdp)
@@ -274,9 +290,11 @@ def create_tables_dict(f_names, f_area, f_caps, f_cur_pop, f_lang, f_gdp):
         econ = []
 
         if type(lang_arr) == dict and type(names) == list and type(lang_arr) == dict:
-            non_econ = combine_non_econ(names, lang_arr, tables["population"])
+            non_econ = combine_non_econ(names, lang_arr, tables["population"], area, capitals)
         else:
             non_econ = False
+
+        # print(non_econ)
 
         if type(gdp_arr) == list and type(tables['currency'] == dict):
             econ = combine_econ(gdp_arr, tables['currency'])
@@ -360,7 +378,11 @@ def create_report_a(db, country):
     except:
         return 'ERROR: could not fetch country.'
 
-    print(e_res)
+    # try:
+    #     all_pop = ne_
+    #     Select='SPECIFICT_ATTRIBUTES'
+
+    # print(e_res)
 
     if ne_res['Items'] == []:
         return 'ERROR: ' + country + " was not found."

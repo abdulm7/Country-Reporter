@@ -24,6 +24,10 @@ ECON = 'econ'
 MIN_YEAR = 1960
 MAX_YEAR = 2030
 
+FILE_NAMES = {
+
+}
+
 def main():
     #
     #  Find AWS access key id and secret access key information
@@ -113,6 +117,8 @@ def main():
                 # creating tables
                 tables = dbf.create_tables_dict("un_shortlist.csv", "shortlist_area.csv", "shortlist_capitals.csv", 'shortlist_curpop.csv', 'shortlist_languages.csv', 'shortlist_gdppc.csv')
                 
+                print(tables[NON_ECON])
+
                 # print(tables[NON_ECON])
                 # loading tables into db
                 if tables[NON_ECON] != False and necon_exist:
