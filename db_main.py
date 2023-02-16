@@ -116,8 +116,6 @@ def main():
 
                 # creating tables
                 tables = dbf.create_tables_dict("un_shortlist.csv", "shortlist_area.csv", "shortlist_capitals.csv", 'shortlist_curpop.csv', 'shortlist_languages.csv', 'shortlist_gdppc.csv')
-                
-                print(tables[NON_ECON])
 
                 # print(tables[NON_ECON])
                 # loading tables into db
@@ -139,13 +137,13 @@ def main():
                     else:
                         print("\tERROR: Could not process economic files. (Check file names/structure)")
             elif (cmd == '6'):
-                valid = False
                 choice = 0
 
-                while choice != 1 and choice != 2:
+                while choice != 1 and choice != 2 and choice != 3:
                     print("Which table would you like to display?")
                     print("  1. Non-economic")
                     print("  2. Economic")
+                    print("  3. Cancel (Go back to menu)")
                     try:
                         choice = int(input('Select a number: '))
                     except:
@@ -170,21 +168,49 @@ def main():
                             print(dbf.print_econ(items))
                         except:
                             print("\tERROR: Economic table does not exist in the database.")
-            
-                    else:
+                    elif (choice != 3):
                         print("\tERROR: Invalid choice")
 
-            # elif (cmd == '5'):
+            elif (cmd == '5'):
+                choice = ""
+                while choice != 1 and choice != 2 and choice != 3:
+                    print("Which table would you like to delete from?")
+                    print("  1. Non-economic")
+                    print("  2. Economic")
+                    print("  3. Cancel (Go back to menu)")
+                    try:
+                        choice = int(input('Select a number: '))
+                    except:
+                        choice = 0 
 
-            #         t = db.Table(NON_ECON)
+                    if choice == 1:
+                        rec_to_del = input("Enter the record (country name) you would like to delete: ")
+                        try:
+                            table = db.Table(NON_ECON)
+                            res = table.delete_item(
+                                Key={
+                                    'country': rec_to_del
+                                }
+                            )
+                            if res['ResponseMetadata']['HTTPStatusCode'] == 200:
+                                print("\t" + rec_to_del + " has been delete successfully!")
+                            else:
+                                print("\tERROR: Unable to delete " + rec_to_del + ".")
+                        except:
+                            print("\tERROR: Country does not exist in the non-economic table.")
 
-            #         res = t.delete_item(
-            #             Key = {
-            #                 'population': "1970"
-            #             }
-            #         )
 
-            #         print()
+                    elif choice == 2:
+                        # printing economic table
+                        try:
+                            table = db.Table(ECON)
+                            items = table.scan()
+
+                            print(dbf.print_econ(items))
+                        except:
+                            print("\tERROR: Economic table does not exist in the database.")
+                    elif (choice != 3):
+                        print("\tERROR: Invalid choice")
             
             elif (cmd == '7'):
                 # create report
