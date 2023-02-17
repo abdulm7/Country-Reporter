@@ -171,6 +171,55 @@ def main():
                     elif (choice != 3):
                         print("\tERROR: Invalid choice")
 
+            elif (cmd == '4'):
+                choice = ""
+                while choice != 1 and choice != 2 and choice != 3:
+                    print("Which table would you like to delete from?")
+                    print("  1. Non-economic")
+                    print("  2. Economic")
+                    print("  3. Cancel (Go back to menu)")
+                    try:
+                        choice = int(input('Select a number: '))
+                    except:
+                        choice = 0 
+                    
+                    if choice == 1 or choice == 2:
+                        rec_to_add = input("Enter the record (country name) you would like to append: ")
+                        try:
+                            selected_table = ""
+                            item = {}
+                            if choice == 1:
+                                selected_table = NON_ECON
+                                item = {
+                                    'country': rec_to_add, 
+                                    'aliases': {
+                                        'official': '',
+                                        'iso3': '',
+                                        'iso2': ''
+                                    }, 
+                                    'area': '', 
+                                    'capital': '',
+                                    'languages': [],
+                                    'population': {}
+                                }
+
+                            else:
+                                selected_table = ECON
+                                item = {
+                                    'country': rec_to_add,
+                                    'currency': '',
+                                    'gdp': {}
+                                }
+                            table = db.Table(NON_ECON)
+                            res = dbf.load_record(db, selected_table, item)
+                            if res:
+                                print("\tSuccessfully added " + rec_to_add + " as a record in the " + selected_table + " table")
+                            else:
+                                print("\tERROR: unable to add " + rec_to_add + " to the " + selected_table + " table.")
+                        except:
+                            print("\tERROR: unable to add " + rec_to_add + " to the " + selected_table + " table.")
+                    elif choice != 3:
+                        print("\tERROR: Invalid choice")
             elif (cmd == '5'):
                 choice = ""
                 while choice != 1 and choice != 2 and choice != 3:
@@ -194,21 +243,26 @@ def main():
                             )
                             if res['ResponseMetadata']['HTTPStatusCode'] == 200:
                                 print("\t" + rec_to_del + " has been delete successfully!")
-                            else:
-                                print("\tERROR: Unable to delete " + rec_to_del + ".")
                         except:
                             print("\tERROR: Country does not exist in the non-economic table.")
 
 
                     elif choice == 2:
                         # printing economic table
+
+                        rec_to_del = input("Enter the record (country name) you would like to delete: ")
                         try:
                             table = db.Table(ECON)
-                            items = table.scan()
-
-                            print(dbf.print_econ(items))
+                            res = table.delete_item(
+                                Key={
+                                    'country': rec_to_del
+                                }
+                            )
+                            if res['ResponseMetadata']['HTTPStatusCode'] == 200:
+                                print("\t" + rec_to_del + " has been delete successfully!")
                         except:
-                            print("\tERROR: Economic table does not exist in the database.")
+                            print("\tERROR: Country does not exist in the non-economic table.")
+
                     elif (choice != 3):
                         print("\tERROR: Invalid choice")
             

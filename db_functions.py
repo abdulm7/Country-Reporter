@@ -312,12 +312,16 @@ def print_econ(items):
         output += ("\n\tcountry: " + str(i['country'] + '\n'))
         output += ("\tcurrency: " + str(i['currency']) + '\n')
         output += ("\tGPD: \n")
+        line_count = 0
         for y in range(MIN_YEAR, MAX_YEAR):
             if (str(y) in i['gdp']):
-                output += "\t\t(year: " + str(y) + " gdp: " + str(i['gdp'][str(y)]) +")\t"
+                output += "\t\t{year: " + str(y) + ", gdp: " + str(i['gdp'][str(y)]) +"}\t"
 
-                if (y % 3 == 0):
+                if (line_count % 3 == 0):
                     output += "\n"
+            line_count += 1
+        if(output[len(output)-1] != '\n'):
+            output += '\n'
         output += "------------------------------------------------------------------------------------------------------------------------------------------------------"
 
     return output
@@ -342,19 +346,20 @@ def print_non_econ(items):
 
         # printing aliases data
         output += "\n\taliases: \n"
-        output += "\t\tiso2: " + i['aliases']['iso2']
-        output += "\tiso3: " + i['aliases']['iso3']
-        output += " \tofficial: " + i['aliases']['official'] + '\n'
+        output += "\t\t{iso2: " + i['aliases']['iso2'] + ','
+        output += "\tiso3: " + i['aliases']['iso3'] + ','
+        output += " \tofficial: " + i['aliases']['official'] + '}\n'
 
         # printing population
         output += "\tpopulation: \n"
+        line_count = 0
         for y in range(MIN_YEAR, MAX_YEAR):
             if (str(y) in i['population']):
-                output += "\t\t(year: " + str(y) + " population: " + str(i['population'][str(y)]) +")\t"
+                output += "\t\t{year: " + str(y) + ", population: " + str(i['population'][str(y)]) +"}\t"
 
-                if (y % 3 == 0):
+                if (line_count % 3 == 0):
                     output += "\n"
-
+            line_count += 1
         if(output[len(output)-1] != '\n'):
             output += '\n'
 
