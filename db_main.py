@@ -186,38 +186,20 @@ def main():
                     if choice == 1 or choice == 2:
                         rec_to_add = input("Enter the record (country name) you would like to append: ")
                         try:
-                            selected_table = ""
-                            item = {}
+                            selected_table = ''
                             if choice == 1:
                                 selected_table = NON_ECON
-                                item = {
-                                    'country': rec_to_add, 
-                                    'aliases': {
-                                        'official': '',
-                                        'iso3': '',
-                                        'iso2': ''
-                                    }, 
-                                    'area': '', 
-                                    'capital': '',
-                                    'languages': [],
-                                    'population': {}
-                                }
-
                             else:
                                 selected_table = ECON
-                                item = {
-                                    'country': rec_to_add,
-                                    'currency': '',
-                                    'gdp': {}
-                                }
-                            table = db.Table(NON_ECON)
-                            res = dbf.load_record(db, selected_table, item)
-                            if res:
+
+                            ret = dbf.add_rec(db, selected_table, rec_to_add)
+
+                            if ret == True:
                                 print("\tSuccessfully added " + rec_to_add + " as a record in the " + selected_table + " table")
                             else:
                                 print("\tERROR: unable to add " + rec_to_add + " to the " + selected_table + " table.")
                         except:
-                            print("\tERROR: unable to add " + rec_to_add + " to the " + selected_table + " table.")
+                            print("\tERROR: unable to add " + rec_to_add + " to the requested table.")
                     elif choice != 3:
                         print("\tERROR: Invalid choice")
             elif (cmd == '5'):
@@ -227,52 +209,39 @@ def main():
                     print("  1. Non-economic")
                     print("  2. Economic")
                     print("  3. Cancel (Go back to menu)")
+                    
                     try:
                         choice = int(input('Select a number: '))
                     except:
                         choice = 0 
-
-                    if choice == 1:
+                    
+                    if (choice == 1 or choice == 2):
                         rec_to_del = input("Enter the record (country name) you would like to delete: ")
-                        try:
-                            table = db.Table(NON_ECON)
-                            res = table.delete_item(
-                                Key={
-                                    'country': rec_to_del
-                                }
-                            )
-                            if res['ResponseMetadata']['HTTPStatusCode'] == 200:
+                        if choice == 1:
+                            ret = dbf.delete_rec(db, NON_ECON, rec_to_del)
+                            if (ret == True):
                                 print("\t" + rec_to_del + " has been delete successfully!")
-                        except:
-                            print("\tERROR: Country does not exist in the non-economic table.")
-
-
-                    elif choice == 2:
-                        # printing economic table
-
-                        rec_to_del = input("Enter the record (country name) you would like to delete: ")
-                        try:
-                            table = db.Table(ECON)
-                            res = table.delete_item(
-                                Key={
-                                    'country': rec_to_del
-                                }
-                            )
-                            if res['ResponseMetadata']['HTTPStatusCode'] == 200:
+                            else:
+                             print("\tERROR: Country does not exist in the non-economic table.")
+                        else:
+                            # deleting from econ table
+                            ret = dbf.delete_rec(db, ECON, rec_to_del)
+                            if (ret == True):
                                 print("\t" + rec_to_del + " has been delete successfully!")
-                        except:
-                            print("\tERROR: Country does not exist in the non-economic table.")
+                            else:
+                             print("\tERROR: Country does not exist in the economic table.")
 
                     elif (choice != 3):
                         print("\tERROR: Invalid choice")
             
             elif (cmd == '7'):
-                # create report
-                print(dbf.create_report_a(db, 'Bosnia and Herzegovina'))
+                country = input("Enter the record (country name) you would like to create the report on: ")
+
+                print(dbf.create_report_a(db, country))
             
 
     except Exception as e:
-        print("ERROR: " + str(e))
+        print("\tERROR: " + str(e))
 
 main()
 

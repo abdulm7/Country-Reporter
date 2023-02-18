@@ -294,14 +294,10 @@ def create_tables_dict(f_names, f_area, f_caps, f_cur_pop, f_lang, f_gdp):
         else:
             non_econ = False
 
-        # print(non_econ)
-
         if type(gdp_arr) == list and type(tables['currency'] == dict):
             econ = combine_econ(gdp_arr, tables['currency'])
         else:
             econ = False
-        
-        # print(non_econ)
 
         return {'non-econ': non_econ, 'econ': econ}
 
@@ -364,15 +360,18 @@ def print_non_econ(items):
             output += '\n'
 
         output += "------------------------------------------------------------------------------------------------------------------------------------------------------"
-        # output += ("\npopulation"
 
     return output
 
 def create_report_a(db, country):
-    ne_table = db.Table(NON_ECON)
-    e_table = db.Table(ECON)
+
+    pop_ranks = {}
+    pop_den = {}
+    gdp_ranks = []
 
     try:
+        ne_table = db.Table(NON_ECON)
+        e_table = db.Table(ECON)
         ne_res = ne_table.query(
             KeyConditionExpression = Key('country').eq(country)
         )
@@ -380,20 +379,70 @@ def create_report_a(db, country):
         e_res = e_table.query(
             KeyConditionExpression = Key('country').eq(country)
         )
-    except:
-        return 'ERROR: could not fetch country.'
 
-    # try:
-    #     all_pop = ne_
-    #     Select='SPECIFICT_ATTRIBUTES'
+        populations = ne_table.scan(
+            AttributesToGet = ['country', 'area', 'population']
+        )
 
-    # print(e_res)
+        gdps = e_table.scan(
+            AttributesToGet = ['country', 'gdp']
+        )
 
-    if ne_res['Items'] == []:
-        return 'ERROR: ' + country + " was not found."
 
-    if e_res['Items'] == []:
-        return 'ERROR: ' + country + " was not found."
+        if ne_res['Items'] == []:
+            return 'ERROR: ' + country + " was not found."
+
+        if e_res['Items'] == []:
+            return 'ERROR: ' + country + " was not found."
+
+        # initializing array for all possible years 
+        for rec in populations['Items']:
+            str_year_arr = rec['population'].keys()
+
+            for y_iter in str_year_arr:
+                pop_ranks[str(y_iter)] = []
+                pop_den[str(y_iter)] = []
+
+        # storing all populations and population densities 
+        # with the corresponding year and country
+        for rec in populations['Items']:
+            str_year_arr = rec['population'].keys()
+    
+            for y_iter in str_year_arr:
+                pop_ranks[str(y_iter)].append({'country': rec['country'], 'population':int(rec['population'][str(y_iter)])})
+                pop_den[str(y_iter)].append({'country': rec['country'], 'pop_den':(int(rec['population'][str(y_iter)])/int(rec['area']))})
+
+        # getting ranks for the selected country
+        selected_pop_ranks = {}
+        selected_den_ranks = {}
+
+        # population density dict and population dict will have the same keys
+        # since they are initialized in the same loop with the same conditions 
+        # so for efficiency will use the same loop
+        pop_keys = pop_ranks.keys()
+        for key in pop_keys:
+            sort_pop_ranks = sorted(pop_ranks[key], key=lambda d: d['population'], reverse=True)
+            sort_den_ranks = sorted(pop_den[key], key=lambda d: d['pop_den'], reverse=True)
+            pop_rank = 1
+            den_rank = 1
+            found_pop = False
+            found_den = False
+            for p in sort_pop_ranks or found_pop:
+                if p['country'] == country:
+                    selected_pop_ranks[key] = pop_rank
+                    found_pop = True
+                else:
+                    pop_rank += 1
+            for d in sort_den_ranks or found_den:
+                if d['country'] == country:
+                    selected_den_ranks[key] = den_rank
+                    found_den = True
+                else:
+                    den_rank += 1
+
+    except Exception as e:
+        # return '\tERROR: could not fetch country.'
+        return e
     
 
     output = "----------------------------\n"
@@ -410,14 +459,22 @@ def create_report_a(db, country):
         else:
             output += str(l) + ', '
             idx += 1
+
+    pop_str_years = ne_res['Items'][0]['population'].keys()
+    pop_years = [int(str_year) for str_year in pop_str_years]
+    pop_min = min(pop_years)
+    pop_max = max(pop_years)
+
     output += "\nCapital City: " + str(ne_res['Items'][0]['capital'])
     output += color.BOLD + "\nPopulation\n" + color.END
     output += "Table of Population, Population Density, and their respective world ranking for that year, ordered by year:\n\n"
-    output += "\t\tYear\t\tPopulation\tRank\tPopulation Density\tRank\n"
-    for y in range(MIN_YEAR, MAX_YEAR):
+    output += color.UNDERLINE + "\t\tYear\t\tPopulation\t\tRank\tPopulation Density\tRank\n" + color.END
+    for y in range(pop_min, pop_max+1):
         if (str(y) in ne_res['Items'][0]['population']):
-            output += "\t\t" + str(y) + '\t\t' + str(ne_res['Items'][0]['population'][str(y)]) + "\t\t"
-            output += "rank" + '\t\t %.1f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])) + '\t\t' + 'rank\n'
+            output += "\t\t" + str(y) + '\t\t' + str(ne_res['Items'][0]['population'][str(y)]) + "\t\t" + str(selected_pop_ranks[str(y)])
+            output +=   '\t\t %.1f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])) + '\t\t' + str(selected_den_ranks[str(y)]) + '\n'
+        else:
+            output += "\t\t" + str(y) + '\n'
 
     
     output += color.BOLD + "\nEconomics" + color.END
@@ -436,7 +493,7 @@ def create_report_a(db, country):
                 latest = y
     
     output += "\nTable of GDP per capita (GDPCC) from " + str(earliest) +" to " + str(latest) + " and rank within the world for that year:\n"
-    output += "\t\tYear\t\tGDPPC\t\tRANK"
+    output += color.UNDERLINE + "\t\tYear\t\tGDPPC\t\tRANK" + color.END
     output += "\n" + gdp_txt
     output +=  "\n----------------------------\n\n"
     
@@ -446,3 +503,44 @@ def create_report_a(db, country):
     return output
 
 
+def delete_rec(db, table, rec):
+    try:
+        table = db.Table(table)
+        res = table.delete_item(
+            Key={
+                'country': rec
+            }
+        )
+        if res['ResponseMetadata']['HTTPStatusCode'] == 200:
+            return True
+        else:
+            return False
+    except:
+        return False
+
+def add_rec(db, table, rec):
+    if table == NON_ECON:
+        item = {
+            'country': rec, 
+            'aliases': {
+                'official': '',
+                'iso3': '',
+                'iso2': ''
+            }, 
+            'area': '', 
+            'capital': '',
+            'languages': [],
+            'population': {}
+        }
+    else:
+        item = {
+            'country': rec, 
+            'currency': '',
+            'gdp': {}
+        }
+
+    res = load_record(db, table, item)
+    if res:
+        return True
+    else:
+        return False
