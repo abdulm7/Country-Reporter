@@ -367,7 +367,7 @@ def create_report_a(db, country):
 
     pop_ranks = {}
     pop_den = {}
-    gdp_ranks = []
+    gdp_ranks = {}
 
     try:
         ne_table = db.Table(NON_ECON)
@@ -412,9 +412,25 @@ def create_report_a(db, country):
                 pop_ranks[str(y_iter)].append({'country': rec['country'], 'population':int(rec['population'][str(y_iter)])})
                 pop_den[str(y_iter)].append({'country': rec['country'], 'pop_den':(int(rec['population'][str(y_iter)])/int(rec['area']))})
 
+        # initializing array for all possible years 
+        for rec in gdps['Items']:
+            str_year_arr = rec['gdp'].keys()
+
+            for y_iter in str_year_arr:
+                gdp_ranks[str(y_iter)] = []
+
+        # storing all populations and population densities 
+        # with the corresponding year and country
+        for rec in gdps['Items']:
+            str_year_arr = rec['gdp'].keys()
+    
+            for y_iter in str_year_arr:
+                gdp_ranks[str(y_iter)].append({'country': rec['country'], 'gdp':int(rec['gdp'][str(y_iter)])})
+
         # getting ranks for the selected country
         selected_pop_ranks = {}
         selected_den_ranks = {}
+        selected_gdp_rank = {}
 
         # population density dict and population dict will have the same keys
         # since they are initialized in the same loop with the same conditions 
@@ -439,6 +455,19 @@ def create_report_a(db, country):
                     found_den = True
                 else:
                     den_rank += 1
+
+
+        gdp_keys = gdp_ranks.keys()
+        for key in gdp_keys:
+            sort_gdp_ranks = sorted(gdp_ranks[key], key=lambda d: d['gdp'], reverse=True)
+            rank = 1
+            found = False
+            for g in sort_gdp_ranks or found:
+                if g['country'] == country:
+                    selected_gdp_rank[key] = rank
+                    found = True
+                else:
+                    rank += 1
 
     except Exception as e:
         # return '\tERROR: could not fetch country.'
@@ -480,19 +509,19 @@ def create_report_a(db, country):
     output += color.BOLD + "\nEconomics" + color.END
     output += "\nCurrency: " + str(e_res['Items'][0]['currency'])
     
-
+    gdp_str_years = e_res['Items'][0]['gdp'].keys()
+    gdp_years = [int(str_year) for str_year in gdp_str_years]
+    gdp_min = min(gdp_years)
+    gdp_max = max(gdp_years)
     gdp_txt = ""
-    earliest = 999999
-    latest = 0
-    for y in range(MIN_YEAR, MAX_YEAR):
+
+    for y in range(gdp_min, gdp_max+1):
         if (str(y) in e_res['Items'][0]['gdp']):
-            gdp_txt += "\t\t"+ str(y) + '\t\t' + str(e_res['Items'][0]['gdp'][str(y)]) +'\t\t' + '\n'
-            if y < earliest:
-                earliest = y
-            if y > latest:
-                latest = y
+            gdp_txt += "\t\t"+ str(y) + '\t\t' + str(e_res['Items'][0]['gdp'][str(y)]) +'\t\t' + str(selected_gdp_rank[str(y)]) + '\n'
+        else:
+            gdp_txt += "\t\t" + str(y)
     
-    output += "\nTable of GDP per capita (GDPCC) from " + str(earliest) +" to " + str(latest) + " and rank within the world for that year:\n"
+    output += "\nTable of GDP per capita (GDPCC) from " + str(gdp_min) +" to " + str(gdp_max) + " and rank within the world for that year:\n"
     output += color.UNDERLINE + "\t\tYear\t\tGDPPC\t\tRANK" + color.END
     output += "\n" + gdp_txt
     output +=  "\n----------------------------\n\n"
