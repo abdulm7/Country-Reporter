@@ -502,9 +502,9 @@ def create_report_a(db, country):
     output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format("Year", "Population", "Rank", "Population Density", "Rank")
     for y in range(pop_min, pop_max+1):
         if (str(y) in ne_res['Items'][0]['population']):
-            output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format(str(y),str(ne_res['Items'][0]['population'][str(y)]), str(selected_pop_ranks[str(y)]), '%.1f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])), str(selected_den_ranks[str(y)]))
+            output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format(str(y),str(ne_res['Items'][0]['population'][str(y)]), str(selected_pop_ranks[str(y)]), '%.2f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])), str(selected_den_ranks[str(y)]))
         else:
-            output += "\t\t" + str(y) + '\n'
+            output += "\t" + str(y) + '\n'
 
     
     output +="\nEconomics"
@@ -520,7 +520,7 @@ def create_report_a(db, country):
         if (str(y) in e_res['Items'][0]['gdp']):
             gdp_txt += "\t{:<20} {:<20} {:<20}\n".format(str(y),str(e_res['Items'][0]['gdp'][str(y)]), str(selected_gdp_rank[str(y)]))
         else:
-            gdp_txt += "\t\t" + str(y)
+            gdp_txt += "\t" + str(y) +'\n'
     
     output += "\nTable of GDP per capita (GDPCC) from " + str(gdp_min) +" to " + str(gdp_max) + " and rank within the world for that year:\n\n"
     output += "\t{:<20} {:<20} {:<20}\n".format("Year","GDPPC", "RANK")
@@ -621,12 +621,12 @@ def create_report_b(db, year):
         output += str(num_ec)
     output +=  "\n----------------------------\n"
     output += "\nTable of Countries Ranked by Population (*largest to smallest*)\n"
-    output += "\t{:<40} {:<20} {:<20}\n".format("Country Name", "Population","Rank")
+    output += "\t{:<40} {:<25} {:<20}\n".format("Country Name", "Population","Rank")
 
     # printing population table
     p_rank = 1
     for p in sorted_pop:
-        output += "\t{:<40} {:<14} {:>10}".format(p['country'], str(p['population']), str(p_rank))
+        output += "\t{:<40} {:<25} {:<20}".format(p['country'], str(p['population']), str(p_rank))
         output += '\n'
         p_rank += 1
 
@@ -635,7 +635,7 @@ def create_report_b(db, year):
     # printing population table
     d_rank = 1
     for p in sorted_den:
-        output += "\t{:<40} {:10.2f} {:>19}".format(p['country'], p['pop_den'], str(d_rank))
+        output += "\t{:<40} {:<25} {:<20}".format(p['country'], '%.2f' %(float(p['pop_den'])), str(d_rank))
         output += '\n'
         d_rank += 1
     
@@ -672,10 +672,36 @@ def create_report_b(db, year):
                 if str(i) in c['gdp']:
                     output += "{:<10}".format(c['gdp'][str(i)])
                 else:
-                    output += '{:100}'.format(" ")
+                    output += '{:10}'.format(" ")
             output += '|\n'
 
         output += '\n'
                 
 
     return output
+
+def check_country_exist(db, country):
+    ne_table = db.Table(NON_ECON)
+    e_table = db.Table(ECON)
+    ne_data = ne_table.scan(
+        AttributesToGet = ['country']
+    )
+    e_data = e_table.scan(
+        AttributesToGet = ['country']
+    )
+
+    ne_found = False
+    e_found = False
+
+    for i in ne_data['Items']:
+        if (country == i['country']):
+            ne_found = True
+
+    for i in ne_data['Items']:
+        if (country == i['country']):
+            e_found = True
+
+    if ne_found and e_found:
+        return True
+    else:
+        return False
