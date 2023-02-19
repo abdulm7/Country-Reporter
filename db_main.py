@@ -8,7 +8,7 @@
 #!/usr/bin/env python3
 # Modules
 import configparser
-import os 
+import os.path
 import sys 
 import pathlib
 import boto3
@@ -236,8 +236,64 @@ def main():
             
             elif (cmd == '7'):
                 country = input("Enter the record (country name) you would like to create the report on: ")
+                output_file = input("Enter the file you would like to write to (**DO NOT INCLUDE FILE EXTENSION**): ")
+                output_file += '.txt'
+                if output_file == '':
+                    print("\tERROR: Invalid file name!")
+                
+                if os.path.exists(output_file):
+                    choice = ""
+                    while choice != '1' and choice.lower() != 'y' and choice != 2 and choice.lower() != 'n':
+                        print('\tWould you like to overwrite the existing '+ output_file)
+                        print("\t\t1. Yes (y)")
+                        print("\t\t2. No (n)")
+                        choice = input("\tChoose an option ('1' or 'y' for yes, '2' or 'n' for no): ")
+                        
+                        if choice == '1' or choice.lower() == 'y':
+                            f = open(output_file , "w")
+                            output = dbf.create_report_a(db, country)
+                            f.write(output)
+                            f.close()
+                        elif choice != '2' and choice.lower() != 'n':
+                            print("\t\tERROR: Invalid choice select one of the options")
+                else:
+                    f = open(output_file, "w")
+                    output = dbf.create_report_a(db, country)
+                    f.write(output)
+                    f.close()
 
-                print(dbf.create_report_a(db, country))
+            elif (cmd == '8'):
+                year = input("Enter the year you would like to create the report on: ")
+                output_file = input("Enter the file you would like to write to (**DO NOT INCLUDE FILE EXTENSION**): ")
+                output_file += '.txt'
+                if output_file == '':
+                    print("\tERROR: Invalid file name!")
+                
+                if os.path.exists(output_file):
+                    choice = ""
+                    while choice != '1' and choice.lower() != 'y' and choice != 2 and choice.lower() != 'n':
+                        print('\tWould you like to overwrite the existing '+ output_file)
+                        print("\t\t1. Yes (y)")
+                        print("\t\t2. No (n)")
+                        choice = input("\tChoose an option ('1' or 'y' for yes, '2' or 'n' for no): ")
+                        
+                        if choice == '1' or choice.lower() == 'y':
+                            f = open(output_file , "w")
+                            output = dbf.create_report_b(db, year)
+                            f.write(output)
+                            f.close()
+                        elif choice != '2' and choice.lower() != 'n':
+                            print("\t\tERROR: Invalid choice select one of the options")
+                else:
+                    f = open(output_file, "w")
+                    # change to report b
+                    output = dbf.create_report_b(db, year)
+                    f.write(output)
+                    f.close()
+            
+
+                
+                
             
 
     except Exception as e:

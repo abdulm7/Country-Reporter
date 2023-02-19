@@ -308,10 +308,11 @@ def print_econ(items):
         output += ("\n\tcountry: " + str(i['country'] + '\n'))
         output += ("\tcurrency: " + str(i['currency']) + '\n')
         output += ("\tGPD: \n")
-        line_count = 0
-        for y in range(MIN_YEAR, MAX_YEAR):
+        line_count = 1
+        gdp_keys = sorted(i['gdp'].keys())
+        for y in gdp_keys:
             if (str(y) in i['gdp']):
-                output += "\t\t{year: " + str(y) + ", gdp: " + str(i['gdp'][str(y)]) +"}\t"
+                output += "\t\t{:<30}".format("{year: " + str(y) + ", gdp: " + str(i['gdp'][str(y)]) +"}")
 
                 if (line_count % 3 == 0):
                     output += "\n"
@@ -348,10 +349,11 @@ def print_non_econ(items):
 
         # printing population
         output += "\tpopulation: \n"
-        line_count = 0
-        for y in range(MIN_YEAR, MAX_YEAR):
+        line_count = 1
+        pop_keys = sorted(i['population'].keys())
+        for y in pop_keys:
             if (str(y) in i['population']):
-                output += "\t\t{year: " + str(y) + ", population: " + str(i['population'][str(y)]) +"}\t"
+                output += "\t\t{:<40}".format("{year: " + str(y) + ", population: " + str(i['population'][str(y)]) + '}')
 
                 if (line_count % 3 == 0):
                     output += "\n"
@@ -475,8 +477,8 @@ def create_report_a(db, country):
     
 
     output = "----------------------------\n"
-    output += color.BOLD + country + color.END + '\n'
-    output += ne_res['Items'][0]['aliases']['official']
+    output += country + '\n'
+    output += "Offically known as: " + ne_res['Items'][0]['aliases']['official']
     output +=  "\n----------------------------\n"
 
     output += "Area: " + str(ne_res['Items'][0]['area']) + '\n'
@@ -495,18 +497,17 @@ def create_report_a(db, country):
     pop_max = max(pop_years)
 
     output += "\nCapital City: " + str(ne_res['Items'][0]['capital'])
-    output += color.BOLD + "\nPopulation\n" + color.END
+    output += "\nPopulation\n"
     output += "Table of Population, Population Density, and their respective world ranking for that year, ordered by year:\n\n"
-    output += color.UNDERLINE + "\t\tYear\t\tPopulation\t\tRank\tPopulation Density\tRank\n" + color.END
+    output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format("Year", "Population", "Rank", "Population Density", "Rank")
     for y in range(pop_min, pop_max+1):
         if (str(y) in ne_res['Items'][0]['population']):
-            output += "\t\t" + str(y) + '\t\t' + str(ne_res['Items'][0]['population'][str(y)]) + "\t\t" + str(selected_pop_ranks[str(y)])
-            output +=   '\t\t %.1f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])) + '\t\t' + str(selected_den_ranks[str(y)]) + '\n'
+            output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format(str(y),str(ne_res['Items'][0]['population'][str(y)]), str(selected_pop_ranks[str(y)]), '%.1f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])), str(selected_den_ranks[str(y)]))
         else:
             output += "\t\t" + str(y) + '\n'
 
     
-    output += color.BOLD + "\nEconomics" + color.END
+    output +="\nEconomics"
     output += "\nCurrency: " + str(e_res['Items'][0]['currency'])
     
     gdp_str_years = e_res['Items'][0]['gdp'].keys()
@@ -517,13 +518,13 @@ def create_report_a(db, country):
 
     for y in range(gdp_min, gdp_max+1):
         if (str(y) in e_res['Items'][0]['gdp']):
-            gdp_txt += "\t\t"+ str(y) + '\t\t' + str(e_res['Items'][0]['gdp'][str(y)]) +'\t\t' + str(selected_gdp_rank[str(y)]) + '\n'
+            gdp_txt += "\t{:<20} {:<20} {:<20}\n".format(str(y),str(e_res['Items'][0]['gdp'][str(y)]), str(selected_gdp_rank[str(y)]))
         else:
             gdp_txt += "\t\t" + str(y)
     
-    output += "\nTable of GDP per capita (GDPCC) from " + str(gdp_min) +" to " + str(gdp_max) + " and rank within the world for that year:\n"
-    output += color.UNDERLINE + "\t\tYear\t\tGDPPC\t\tRANK" + color.END
-    output += "\n" + gdp_txt
+    output += "\nTable of GDP per capita (GDPCC) from " + str(gdp_min) +" to " + str(gdp_max) + " and rank within the world for that year:\n\n"
+    output += "\t{:<20} {:<20} {:<20}\n".format("Year","GDPPC", "RANK")
+    output += gdp_txt
     output +=  "\n----------------------------\n\n"
     
 
@@ -573,3 +574,108 @@ def add_rec(db, table, rec):
         return True
     else:
         return False
+
+def create_report_b(db, year):
+
+    try:
+        ne_table = db.Table(NON_ECON)
+        e_table = db.Table(ECON)
+
+        ne_data = ne_table.scan(
+            AttributesToGet = ['country', 'area', 'population']
+        )
+
+        e_data = e_table.scan(
+            AttributesToGet = ['country', 'gdp']
+        )
+    except Exception as e:
+        return e
+
+        # storing all populations and population densities 
+    # with the corresponding year and country
+    ne_memory = []
+    for rec in ne_data['Items']:
+        if str(year) in rec['population']:
+            ne_memory.append({
+                'country': rec['country'], 
+                'population':int(rec['population'][str(year)]), 
+                'pop_den':(int(rec['population'][str(year)])/int(rec['area']))
+                })
+
+
+    sorted_pop = sorted(ne_memory, key=lambda d: d['population'], reverse=True)
+
+    sorted_den = sorted(ne_memory, key=lambda d: d['pop_den'], reverse=True)
+
+    output =  "\n----------------------------\n"
+    output += "Year: " + year
+    output += "\nNumber of Countries: "
+    num_ec = len(e_data['Items'])
+    num_nec = len(ne_data['Items'])
+    # accounting for the case of different countries in each table
+    if num_ec != num_nec:
+        # identify if economic table as different number of countries than non-econ
+        output += str(num_ec) + " Economic & " + str(num_nec) + "Non-Economic\n"
+    else:
+        # if same number of countries 
+        output += str(num_ec)
+    output +=  "\n----------------------------\n"
+    output += "\nTable of Countries Ranked by Population (*largest to smallest*)\n"
+    output += "\t{:<40} {:<20} {:<20}\n".format("Country Name", "Population","Rank")
+
+    # printing population table
+    p_rank = 1
+    for p in sorted_pop:
+        output += "\t{:<40} {:<14} {:>10}".format(p['country'], str(p['population']), str(p_rank))
+        output += '\n'
+        p_rank += 1
+
+    output += "\n\nTable of Countries Ranked by Density (*largest to smallest*)\n"
+    output += "\t{:<40} {:<25} {:<20}\n".format("Country Name", "Population Density","Rank")
+    # printing population table
+    d_rank = 1
+    for p in sorted_den:
+        output += "\t{:<40} {:10.2f} {:>19}".format(p['country'], p['pop_den'], str(d_rank))
+        output += '\n'
+        d_rank += 1
+    
+    output += "\n\nGDP Per Capita for all Countries\n"
+    
+    decades = []
+    for i in e_data['Items']:
+        str_years = i['gdp'].keys()
+        for s in str_years:
+            dec = s[:3] + '0'
+            if (int(dec) not in decades):
+                decades.append(int(dec))
+
+    sort_econ = sorted(e_data['Items'], key=lambda d: d['country'])
+    
+    for d in sorted(decades):
+        output += "\t" + str(d) + "s Table\n"
+        # print header first
+        output += "\t|{:<35}".format("Country Name")
+        for i in range(d, d+10):
+            output += "{:<10}".format(str(i))
+        output += '|\n'
+        output += '\t'
+        # 135 because if you add up all the spacing in the formatting
+        # 35 + 10*10 (years 0-9 in each decade)
+        for i in range(135):
+            output += '-'
+        output += '\n'
+        # printing data
+        for c in sort_econ:
+            output += "\t|{:<35}|".format(c['country'])
+            
+            for i in range(d, d+10):
+                if str(i) in c['gdp']:
+                    output += "{:<10}".format(c['gdp'][str(i)])
+                else:
+                    output += '{:100}'.format(" ")
+            output += '|\n'
+
+        output += '\n'
+                
+
+    return output
