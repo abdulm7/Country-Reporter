@@ -4,6 +4,7 @@
 # CIS*4010
 # Assignment #2
 # DynamoDB Assignment
+# DB modules
 
 #!/usr/bin/env python3
 # Modules
@@ -17,28 +18,15 @@ import json
 
 from boto3.dynamodb.conditions import Key, Attr
 
-# Range of possible years (excess does not affect output)
-MIN_YEAR = 1960
-MAX_YEAR = 2030
+# # Range of possible years (excess does not affect output)
+# MIN_YEAR = 1960
+# MAX_YEAR = 2030
 
 # table names
 NON_ECON = 'non-econ'
 ECON = 'econ'
 
-# to improve report format
-class color:
-   PURPLE = '\033[95m'
-   CYAN = '\033[96m'
-   DARKCYAN = '\033[36m'
-   BLUE = '\033[94m'
-   GREEN = '\033[92m'
-   YELLOW = '\033[93m'
-   RED = '\033[91m'
-   BOLD = '\033[1m'
-   UNDERLINE = '\033[4m'
-   END = '\033[0m'
-
-# reading in all "one-to-one" data e.g. name, official name, ISO2, ISO3, Area, & capital
+# reading in "one-to-one" data e.g. name, official name, ISO2, ISO3
 # **Limitation** files must be in the format provided by Dr. Stacey
 # takes in the "un_shortlist"
 # storing and structuring data to be ready for push to dynamodb
@@ -493,14 +481,18 @@ def create_report_a(db, country):
 
     pop_str_years = ne_res['Items'][0]['population'].keys()
     pop_years = [int(str_year) for str_year in pop_str_years]
-    pop_min = min(pop_years)
-    pop_max = max(pop_years)
+    try:
+        pop_min = min(pop_years)
+        pop_max = max(pop_years) + 1
+    except:
+        pop_min = 0
+        pop_max = 0
 
     output += "\nCapital City: " + str(ne_res['Items'][0]['capital'])
     output += "\nPopulation\n"
     output += "Table of Population, Population Density, and their respective world ranking for that year, ordered by year:\n\n"
     output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format("Year", "Population", "Rank", "Population Density", "Rank")
-    for y in range(pop_min, pop_max+1):
+    for y in range(pop_min, pop_max):
         if (str(y) in ne_res['Items'][0]['population']):
             output += "\t{:<10} {:<15} {:<10} {:<20} {:<15}\n".format(str(y),str(ne_res['Items'][0]['population'][str(y)]), str(selected_pop_ranks[str(y)]), '%.2f' %(float(ne_res['Items'][0]['population'][str(y)])/float(ne_res['Items'][0]['area'])), str(selected_den_ranks[str(y)]))
         else:
@@ -512,11 +504,17 @@ def create_report_a(db, country):
     
     gdp_str_years = e_res['Items'][0]['gdp'].keys()
     gdp_years = [int(str_year) for str_year in gdp_str_years]
-    gdp_min = min(gdp_years)
-    gdp_max = max(gdp_years)
+
+
+    try:
+        gdp_min = min(gdp_years)
+        gdp_max = max(gdp_years) + 1
+    except:
+        gdp_min = 0
+        gdp_max = 0
     gdp_txt = ""
 
-    for y in range(gdp_min, gdp_max+1):
+    for y in range(gdp_min, gdp_max):
         if (str(y) in e_res['Items'][0]['gdp']):
             gdp_txt += "\t{:<20} {:<20} {:<20}\n".format(str(y),str(e_res['Items'][0]['gdp'][str(y)]), str(selected_gdp_rank[str(y)]))
         else:
@@ -615,7 +613,7 @@ def create_report_b(db, year):
     # accounting for the case of different countries in each table
     if num_ec != num_nec:
         # identify if economic table as different number of countries than non-econ
-        output += str(num_ec) + " Economic & " + str(num_nec) + "Non-Economic\n"
+        output += str(num_ec) + " Economic & " + str(num_nec) + " Non-Economic\n"
     else:
         # if same number of countries 
         output += str(num_ec)
@@ -697,7 +695,7 @@ def check_country_exist(db, country):
         if (country == i['country']):
             ne_found = True
 
-    for i in ne_data['Items']:
+    for i in e_data['Items']:
         if (country == i['country']):
             e_found = True
 
