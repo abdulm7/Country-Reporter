@@ -1,4 +1,4 @@
-How to run:
+# How to run:
  - pip3 install -r Requirements.txt
  - python3 db_main.py OR use modules in your own program
 
@@ -36,17 +36,17 @@ How my Python Modules are Structured and any Changes
     - display a specified table
     - query modules that build the require reports
 
-How to connect to the database
+# How to connect to the database
  - have a AWS user named 'default' which has admin and db read and write permissions
  - have your S5-S3.conf file (left name for convience of using same file as A1)
     - S5-S3.conf file should contain your 'default' user's access and secret keys
  - ensure config file is in the same directory as db_main.py
 
-How to use modules:
+# How to use modules:
  - All modules can be used through the main program, 'db_main.py'
  - An interactive CLI that is simple and easy to use
 
-How to generate both types of reports:
+# How to generate both types of reports:
  - To generate each report simply run the 'db_main.py' file
  - ensure the data has been loaded into the databases
     - if not you can load in db_main if csv files are in the same directory
@@ -58,7 +58,7 @@ How to generate both types of reports:
     - enter year you desire to see (NOTE: YEAR MUST BE NUMERIC)
     - enter the file you would like to store the report in (NOTE: DO NOT INCLUDE EXTENSION e.g. wrong: report_b.txt, correct: report_b)
 
-Main Program:
+# Main Program:
  - the 'db_main.py' file is the program that can excute all of the modules
  - a simple CLI that allows the user to:
     - create the 'non-econ' (Non-economic) and 'econ' (Economic) tables in the database with a single command
@@ -74,12 +74,12 @@ Main Program:
  - All menu options can be selected with their associate numeric value to reduce the complications of string commands. 'quit' and 'exit' can be used to end the program as well.
  - When writing the report to a file, if the txt file already exists, the user will be prompted whether they would like to overwrite or not, in this scenario they can used the associated numeric values or enter 'y' for yes or 'n' for no
 
-How to make edits
+# How to make edits
  - Edits can easily be made through option '9' in the menu where you can add/update information in an existing record
  - if the record doesn't exist, you can add it by using option '4'
  - These menu options are very interative and will inform the user of the correct input required with useful error messages assuming they incorrectly inputted something
 
-Limitations:
+# Limitations:
  - Country input is case sensitive so user must match case of the country as well as the spelling of the common name to correctly retrieve the information
     - e.g. user enters 'Central african republic', this would result in 'country not found' error
            to fix this, user must enter 'Central African Republic' 
