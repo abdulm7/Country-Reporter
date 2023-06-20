@@ -1,25 +1,33 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
+import BeatLoader from 'react-spinners/BeatLoader'
 
 export default function EconTable() {
     const [column, setColumn] = useState([])
     const [records, setRecords] = useState([])
     const [gdpYears, setYears] = useState([])
+    const [loading, setLoading] = useState(true)
 
-      useEffect(() => {
-    fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=econ')
-    .then(res => res.json())
-    .then(data => {
-      setColumn(Object.keys(data[0]))
-      setRecords(data)
-      setYears(Object.keys(data[0].gdp))
-      gdpYears[0] = "GDP/Year ".concat(gdpYears[0])
+    useEffect(() => {
+        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=econ')
+        .then(res => res.json())
+        .then(data => {
+        setColumn(Object.keys(data[0]))
+        setRecords(data)
+        setYears(Object.keys(data[0].gdp))
+        gdpYears[0] = "GDP/Year ".concat(gdpYears[0])
+        setLoading(false)
     })
 
     
   })
 
   return(
+
+    loading ?
+
+    <BeatLoader color="#36d7b7" />
+    :
     <table classNam = 'table' class="tableFixHead">
         <thead>
           <tr>
@@ -39,9 +47,10 @@ export default function EconTable() {
 
                 <td>{record.country}</td>
                 <td>{record.currency}</td>
-                {Object.keys(record.gdp).map((key)=>(
-                  <td>{record.gdp[key]}</td>
-                ))}
+                {gdpYears.map((key)=> record.gdp[key] != undefined ?
+                  <td>{record.gdp[key]}</td>:
+                  <td></td>
+                )}
               </tr>
             ))
           }
