@@ -2,6 +2,7 @@ import './App.css';
 import EconTable from './components/EconTable'
 import { useEffect } from 'react';
 import { useState } from 'react';
+import NonEconTable from './components/NonEconTable';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <h1>Country Reporter</h1>
       
       <EconTable />
+      <NonEconTable/>
     
     </div>
   );
