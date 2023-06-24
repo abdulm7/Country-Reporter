@@ -11,10 +11,12 @@ export default function NonEconTable() {
     fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=non-econ')
     .then(res => res.json())
     .then(data => {
-      setRecords(data)
-      setYears(Object.keys(data[0].population))
+      setRecords(data['items'])
+      setYears(data.years)
       setLoading(false)
+      
     })
+
   })
 
 
@@ -24,7 +26,7 @@ export default function NonEconTable() {
 
     <BeatLoader color="#36d7b7" />
     :
-    <div>
+    <div class="db-table">
         <h3>Population & Non-Economic Table</h3>
         <table classNam = 'table' class="tableFixHead">
             

@@ -128,3 +128,7 @@ table {
   height: 500px;
   overflow-y: scroll;
 }
+
+.db-table{
+  margin: 5%;
+}

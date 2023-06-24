@@ -11,22 +11,20 @@ export default function EconTable() {
         fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=econ')
         .then(res => res.json())
         .then(data => {
-        setRecords(data)
-        setYears(Object.keys(data[0].gdp))
-        gdpYears[0] = "GDP/Year ".concat(gdpYears[0])
-        setLoading(false)
+            setRecords(data['items'])
+            setYears(data.years)
+            setLoading(false)
     })
-
-    
   })
 
   return(
 
     loading ?
-
-    <BeatLoader color="#36d7b7" />
+    <div class="db-table">
+        <BeatLoader color="#36d7b7" />
+    </div>
     :
-    <div>
+    <div class="db-table">
         <h3>GDP & Economic Table</h3>
         <table classNam = 'table' class="tableFixHead">
             <thead>
