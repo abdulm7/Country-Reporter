@@ -19,6 +19,7 @@ export default function CountryReportForm() {
     .then(res => res.json())
     .then(data => {
         setCountries(data)
+        setSelectedOption(data[0])
         setLoading(false)
       
     })

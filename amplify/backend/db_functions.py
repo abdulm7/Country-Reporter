@@ -524,10 +524,7 @@ def create_report_a(db, country):
     output += "\t{:<20} {:<20} {:<20}\n".format("Year","GDPPC", "RANK")
     output += gdp_txt
     output +=  "\n----------------------------\n\n"
-    
-
-    
-
+      
     return output
 
 
