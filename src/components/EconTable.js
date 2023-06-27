@@ -13,9 +13,10 @@ export default function EconTable() {
         .then(data => {
             setRecords(data['items'])
             setYears(data.years)
+            console.log('testing')
             setLoading(false)
     })
-  })
+  }, [])
 
   return(
 
@@ -29,10 +30,10 @@ export default function EconTable() {
         <table classNam = 'table' class="tableFixHead">
             <thead>
             <tr>
-                <th>Country Name</th>
-                <th>Currency</th>
+                <th key='country-h'>Country Name</th>
+                <th key='currency-h'>Currency</th>
                 {gdpYears.map((key)=>(
-                    <th>{key}</th>
+                    <th key={'gdp-' + key}>{key}</th>
                 ))}
             </tr>
             </thead>
@@ -40,10 +41,10 @@ export default function EconTable() {
             {
                 records.map((record, i) => (
                 <tr key = {i}>
-                    <td>{record.country}</td>
-                    <td>{record.currency}</td>
+                    <td key={'country-' + i}>{record.country}</td>
+                    <td key={'currency-' + i}>{record.currency}</td>
                     {gdpYears.map((key) => record.gdp[key] !== undefined ?
-                    <td>{record.gdp[key]}</td>:
+                    <td key={'year-'+key+'-' + record.gdp[key]}>{record.gdp[key]}</td>:
                     <td></td>
                     )}
                 </tr>

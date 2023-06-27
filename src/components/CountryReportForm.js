@@ -1,15 +1,17 @@
 
 
+import { Button } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader'
 
 export default function CountryReportForm() {
 
-    const [countries, setCountries] = useState([])
+    // const [countries, setCountries] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
-    
+    const [countries,setCountries]= useState();
+
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
       };
@@ -19,10 +21,10 @@ export default function CountryReportForm() {
     .then(res => res.json())
     .then(data => {
         setCountries(data)
-        setSelectedOption(data[0])
+        // setSelectedOption(data[0])
         setLoading(false)
       
-    })
+    }, [])
 
   })
 
@@ -34,13 +36,15 @@ export default function CountryReportForm() {
     </div>
     :
 
-    <div className='db-table'>
+    <form className='db-table'>
         <select value={selectedOption} onChange={handleOptionChange}>
             {countries.map((c) => (
-                <option value={c}>{c}</option>
+                <option key={c + "-key"} value={c}>{c}</option>
             ))}
         </select>
         {selectedOption && <p>You selected: {selectedOption}</p>}
-    </div>
+
+        <Button>Submit</Button>
+    </form>
   )
 }

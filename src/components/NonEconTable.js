@@ -6,6 +6,7 @@ export default function NonEconTable() {
     const [records, setRecords] = useState([])
     const [popYears, setYears] = useState([])
     const [loading, setLoading] = useState(true)
+    const removedChars = /["\[\]]/g;
 
       useEffect(() => {
     fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=non-econ')
@@ -15,7 +16,7 @@ export default function NonEconTable() {
       setYears(data.years)
       setLoading(false)
       
-    })
+    }, [])
 
   })
 
@@ -51,7 +52,7 @@ export default function NonEconTable() {
                     <td>{record.capital}</td>
                     <td>{record.aliases.iso3}</td>
                     <td>{record.area}</td>
-                    <td>{JSON.stringify(record.languages)}</td>
+                    <td>{JSON.stringify(record.languages).replace(removedChars, "")}</td>
                     {popYears.map((key) => record.population[key] !== undefined ?
                         <td>{record.population[key]}</td>:
                         <td></td>
