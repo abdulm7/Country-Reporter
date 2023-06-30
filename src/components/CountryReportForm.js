@@ -1,9 +1,10 @@
 
 
-import { Button } from '@material-ui/core';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader'
+// import Modal from 'react-modal';
+import { Button, Dialog, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 
 export default function CountryReportForm() {
 
@@ -11,40 +12,85 @@ export default function CountryReportForm() {
     const [loading, setLoading] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
     const [countries,setCountries]= useState();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
       };
 
-      useEffect(() => {
-    fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/JoinCountries')
-    .then(res => res.json())
-    .then(data => {
-        setCountries(data)
-        // setSelectedOption(data[0])
-        setLoading(false)
-      
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      // Perform API call or other form submission logic
+      setSelectedOption('');
+      closeModal();
+      window.location.reload();
+    };
+
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+
+    useEffect(() => {
+        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/JoinCountries')
+        .then(res => res.json())
+        .then(data => {
+            setCountries(data)
+            // setSelectedOption(data[0])
+            setLoading(false)
+        
     }, [])
 
   })
 
+  const modalStyles = {
+    minWidth: 400, // Minimum width in pixels
+    minHeight: 200, // Minimum height in pixels
+  };
+
   return (
 
-    loading ?
-    <div className="db-table">
-        <BeatLoader color="#36d7b7" />
+    
+        // <BeatLoader color="#36d7b7" />
+
+    <div>
+        <Button variant="contained" color="primary" onClick={openModal}>Create Country Report</Button>
+
+        <Dialog
+            className='modal'
+            open={modalIsOpen} 
+            onClose={closeModal} 
+            contentLabel="Form Modal"
+            PaperProps={{
+                style: modalStyles,
+              }}
+        >
+            {loading ?
+
+            <div className="db-table form">
+                <BeatLoader color="#36d7b7" />
+            </div>
+            :
+
+            <form className='db-table form-center form' onSubmit={handleSubmit}>
+                <h4>Create Country Report</h4>
+                <FormControl>
+                    <InputLabel>Country</InputLabel>
+                    <Select value={selectedOption} onChange={handleOptionChange}>
+                        <MenuItem  value="" disabled hidden>
+                            Select a Country
+                        </MenuItem >
+                        {countries.map((c) => (
+                            <MenuItem key={c + "-key"} value={c}>{c}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <Button className='btn-sumbit' variant="contained" color="secondary" type='submit'>Submit</Button>
+            </form>}
+        </Dialog>
     </div>
-    :
-
-    <form className='db-table'>
-        <select value={selectedOption} onChange={handleOptionChange}>
-            {countries.map((c) => (
-                <option key={c + "-key"} value={c}>{c}</option>
-            ))}
-        </select>
-        {selectedOption && <p>You selected: {selectedOption}</p>}
-
-        <Button>Submit</Button>
-    </form>
   )
 }

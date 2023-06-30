@@ -25,9 +25,9 @@ export default function EconTable() {
         <BeatLoader color="#36d7b7" />
     </div>
     :
-    <div class="db-table">
+    <div className="db-table">
         <h3>GDP & Economic Table</h3>
-        <table classNam = 'table' class="tableFixHead">
+        <table className="table tableFixHead">
             <thead>
             <tr>
                 <th key='country-h'>Country Name</th>
@@ -45,7 +45,7 @@ export default function EconTable() {
                     <td key={'currency-' + i}>{record.currency}</td>
                     {gdpYears.map((key) => record.gdp[key] !== undefined ?
                     <td key={'year-'+key+'-' + record.gdp[key]}>{record.gdp[key]}</td>:
-                    <td></td>
+                    <td key={'empty-' + key + '-' + i}></td>
                     )}
                 </tr>
                 ))

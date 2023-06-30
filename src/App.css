@@ -132,3 +132,13 @@ table {
 .db-table{
   margin: 5%;
 }
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form {
+  text-align: center;
+}
