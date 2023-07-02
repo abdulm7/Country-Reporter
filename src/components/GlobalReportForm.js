@@ -11,7 +11,7 @@ export default function GlobalReportForm() {
     // const [countries, setCountries] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
-    const [years, setYears]= useState();
+    const [years, setYears]= useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const handleOptionChange = (event) => {
@@ -80,12 +80,12 @@ export default function GlobalReportForm() {
                 <FormControl>
                     <InputLabel>Year</InputLabel>
                     <Select className='country-select' value={selectedOption} onChange={handleOptionChange}>
-                        <MenuItem  disabled value="" >
-                            Select Year
-                        </MenuItem >
-                        {years.map((y) => (
-                            <MenuItem key={y + "-key"} value={y}>{y}</MenuItem>
-                        ))}
+                        {Array.isArray(years) ? years.map((y) => (
+                            <MenuItem key={y + "-key"} value={y}>{y}</MenuItem> 
+                        ))
+                    :
+                        <MenuItem></MenuItem>
+                    }
                     </Select>
                     <Button className='btn-sumbit' variant="contained" color="secondary" type='submit'>Submit</Button>
                 </FormControl>

@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader'
-// import Modal from 'react-modal';
 import { Button, Dialog, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 
 export default function CountryReportForm() {
@@ -11,7 +10,7 @@ export default function CountryReportForm() {
     // const [countries, setCountries] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
-    const [countries,setCountries]= useState();
+    const [countries,setCountries]= useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const handleOptionChange = (event) => {

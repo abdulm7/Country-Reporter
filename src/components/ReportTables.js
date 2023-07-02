@@ -9,12 +9,14 @@ function ReportTables() {
         <div className="table-buttons table-buttons-center">
           <CountryReportForm/>
         </div>
+        <h5>Country Reports</h5>
         <table>
+            
           <thead>
             <tr>
-              <th>Table 1 Header 1</th>
-              <th>Table 1 Header 2</th>
-              <th>Table 1 Header 3</th>
+              <th>Report Name</th>
+              <th>Creation Date</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
@@ -26,12 +28,13 @@ function ReportTables() {
         <div className="table-buttons table-buttons-center">
           <GlobalReportForm/>
         </div>
+        <h5>Global Reports</h5>
         <table>
           <thead>
             <tr>
-              <th>Table 2 Header 1</th>
-              <th>Table 2 Header 2</th>
-              <th>Table 2 Header 3</th>
+              <th>Report Name</th>
+              <th>Creation Date</th>
+              <th>View</th>
             </tr>
           </thead>
           <tbody>
