@@ -13,7 +13,6 @@ export default function EconTable() {
         .then(data => {
             setRecords(data['items'])
             setYears(data.years)
-            console.log('testing')
             setLoading(false)
     })
   }, [])

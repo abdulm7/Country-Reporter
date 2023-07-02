@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
 import BeatLoader from 'react-spinners/BeatLoader'
+// import Modal from 'react-modal';
 import { Button, Dialog, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 
 export default function CountryReportForm() {
@@ -21,9 +22,14 @@ export default function CountryReportForm() {
       e.preventDefault();
       // Perform API call or other form submission logic
       // need to make corrections for backend
-      setSelectedOption('');
-      closeModal();
-    //   window.location.reload();
+
+      if(selectedOption === ''){
+        alert("ERROR: You must select a country to submit!")
+      }else{
+        setSelectedOption('');
+        closeModal();
+        window.location.reload();
+      }
     };
 
     const openModal = () => {
@@ -53,8 +59,6 @@ export default function CountryReportForm() {
 
   return (
 
-    
-        // <BeatLoader color="#36d7b7" />
 
     <div>
         <Button variant="contained" color="primary" onClick={openModal}>Create Country Report</Button>
@@ -80,7 +84,7 @@ export default function CountryReportForm() {
                 <FormControl>
                     <InputLabel>Country</InputLabel>
                     <Select className='country-select' value={selectedOption} onChange={handleOptionChange}>
-                        <MenuItem  disabled value="" >
+                        <MenuItem  value= "" >
                             Select a Country
                         </MenuItem >
                         {countries.map((c) => (
