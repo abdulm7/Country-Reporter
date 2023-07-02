@@ -142,3 +142,45 @@ table {
 .form {
   text-align: center;
 }
+
+.country-select{
+  /* display:flex; */
+  margin: 10%;
+  min-width: 120%;
+  max-width: 150%;
+}
+
+
+.tables-container {
+  display: flex;
+  justify-content: center;
+}
+
+.table-wrapper {
+  margin-right: 20px;
+}
+
+.table-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.table-buttons-center {
+  align-items: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+
+button {
+  padding: 8px 16px;
+}

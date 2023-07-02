@@ -6,12 +6,12 @@ import BeatLoader from 'react-spinners/BeatLoader'
 // import Modal from 'react-modal';
 import { Button, Dialog, FormControl, Select, MenuItem, InputLabel} from '@material-ui/core';
 
-export default function CountryReportForm() {
+export default function GlobalReportForm() {
 
     // const [countries, setCountries] = useState([])
     const [loading, setLoading] = useState(true)
     const [selectedOption, setSelectedOption] = useState('');
-    const [countries,setCountries]= useState();
+    const [years, setYears]= useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const handleOptionChange = (event) => {
@@ -36,11 +36,10 @@ export default function CountryReportForm() {
     };
 
     useEffect(() => {
-        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/JoinCountries')
+        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/GetYears')
         .then(res => res.json())
         .then(data => {
-            setCountries(data)
-            // setSelectedOption(data[0])
+            setYears(data)
             setLoading(false)
         
     }, [])
@@ -58,7 +57,7 @@ export default function CountryReportForm() {
         // <BeatLoader color="#36d7b7" />
 
     <div>
-        <Button variant="contained" color="primary" onClick={openModal}>Create Country Report</Button>
+        <Button variant="contained" color="primary" onClick={openModal}>Create Global Report</Button>
 
         <Dialog
             className='modal'
@@ -77,15 +76,15 @@ export default function CountryReportForm() {
             :
 
             <form className='db-table form-center form' onSubmit={handleSubmit}>
-                <h4>Create Country Report</h4>
+                <h4>Create Global Report</h4>
                 <FormControl>
-                    <InputLabel>Country</InputLabel>
+                    <InputLabel>Year</InputLabel>
                     <Select className='country-select' value={selectedOption} onChange={handleOptionChange}>
                         <MenuItem  disabled value="" >
-                            Select a Country
+                            Select Year
                         </MenuItem >
-                        {countries.map((c) => (
-                            <MenuItem key={c + "-key"} value={c}>{c}</MenuItem>
+                        {years.map((y) => (
+                            <MenuItem key={y + "-key"} value={y}>{y}</MenuItem>
                         ))}
                     </Select>
                     <Button className='btn-sumbit' variant="contained" color="secondary" type='submit'>Submit</Button>

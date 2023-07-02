@@ -4,6 +4,7 @@ import './App.css';
 import EconTable from './components/EconTable'
 import NonEconTable from './components/NonEconTable';
 import CountryReportForm from './components/CountryReportForm';
+import ReportTables from './components/ReportTables';
 
 
 function App() {
@@ -15,9 +16,9 @@ function App() {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
       <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-
       <h1>Country Reporter</h1>
-      <CountryReportForm />
+      {/* <CountryReportForm /> */}
+      <ReportTables/>
       <EconTable />
       <NonEconTable/>
       <br/>

@@ -44,7 +44,7 @@ export default function EconTable() {
                     <td key={'country-' + i}>{record.country}</td>
                     <td key={'currency-' + i}>{record.currency}</td>
                     {gdpYears.map((key) => record.gdp[key] !== undefined ?
-                    <td key={'year-'+key+'-' + record.gdp[key]}>{record.gdp[key]}</td>:
+                    <td key={'year-'+ key + '-' + record.gdp[key]}>{record.gdp[key]}</td>:
                     <td key={'empty-' + key + '-' + i}></td>
                     )}
                 </tr>
