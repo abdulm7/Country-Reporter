@@ -72,7 +72,6 @@ export default function CountryReportForm() {
                 className='modal'
                 open={modalIsOpen}
                 onClose={closeModal}
-                contentLabel="Form Modal"
                 PaperProps={{
                     style: modalStyles,
                 }}

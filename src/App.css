@@ -138,8 +138,11 @@ button {
 }
 
 .report-div {
-  width: 150%;
+  display:flex;
+  width: 90%;
+  height: 500px;
   margin: 10%;
+  overflow: auto;
 }
 
 .modalTitle {
@@ -148,13 +151,4 @@ button {
   background: #f5f5f5; /* replace with your desired background color */
   padding: 16px; /* adjust padding as needed */
   /* other styles for the title */
-}
-
-.modalCloseButton {
-  position: sticky;
-  top: 0;
-  right: 0;
-  margin-top: 16px; /* adjust margin as needed */
-  margin-right: 16px; /* adjust margin as needed */
-  /* other styles for the close button */
 }

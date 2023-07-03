@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CountryReportForm from './CountryReportForm';
 import GlobalReportForm from './GlobalReportForm';
 import BeatLoader from 'react-spinners/BeatLoader'
-import { Button, Dialog, DialogActions, DialogTitle} from '@material-ui/core';
+import { Button, Dialog, DialogActions} from '@material-ui/core';
 
 function ReportTables() {
 
@@ -20,6 +20,7 @@ function ReportTables() {
             .then(data => {
                 setCountryReports(data['country'])
                 setGlobalReports(data['global'])
+                console.log(data)
                 setLoading(false)
             })
 
@@ -27,9 +28,6 @@ function ReportTables() {
 
     function openModal(report, title) {
         // Implement logic to open the modal with the parameter
-        
-        
-        console.log(report)
 
         const decodedString = decodeURIComponent(report)
             .replace(/\\n/g, '\n')   // Replace \n with line break
@@ -45,11 +43,12 @@ function ReportTables() {
     };
 
     const modalStyles = {
-        minWidth: 500, // Minimum width in pixels
+        minWidth: 1000, // Minimum width in pixels
         minHeight: 300, // Minimum height in pixels
         display: 'block',
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden'
       };
 
     return (
@@ -150,7 +149,7 @@ function ReportTables() {
                                             <td key={report.file + '-report'}><Button
                                                 variant="contained"
                                                 color='default'
-                                                onClick={openModal}
+                                                onClick={() => openModal(report.body, report.file)}
                                             >View</Button> </td>
 
                                         </tr>
@@ -161,12 +160,12 @@ function ReportTables() {
 
                 </table>
 
+            </div>
 
-                <Dialog
+            <Dialog
                     className='report-modal'
                     open={modalIsOpen} 
                     onClose={closeModal} 
-                    contentLabel="Report Modal"
                     PaperProps={{
                         style: modalStyles,
                     }}
@@ -175,7 +174,6 @@ function ReportTables() {
                     <div className="modalTitle">
                         <h4>{modalTitle}</h4>
                     </div>
-                    {/* <DialogTitle>{modalTitle}</DialogTitle> */}
                         <div className='report-div'>
                             <pre>{modalBody}</pre>
                         </div>
@@ -187,7 +185,6 @@ function ReportTables() {
                         {/* Additional actions or buttons */}
                     </DialogActions>
                 </Dialog>
-            </div>
         </div>
     );
 }

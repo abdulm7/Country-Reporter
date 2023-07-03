@@ -13,6 +13,7 @@ export default function GlobalReportForm() {
     const [selectedOption, setSelectedOption] = useState('');
     const [years, setYears]= useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [subLoading, setSubLoading] = useState(false)
 
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
@@ -20,8 +21,20 @@ export default function GlobalReportForm() {
 
     const handleSubmit = (e) => {
       e.preventDefault();
-      // Perform API call or other form submission logic
-      // need to make corrections for backend
+
+      if (selectedOption === ''){
+        alert("ERROR: You must select a contry to submit!")
+      }else{
+        setSubLoading(true)
+        let api = "https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/CreateGlobalReport?year="
+        fetch(api + selectedOption)
+            .then(res => res.json())
+            .then(data => {
+                setSelectedOption('');
+                closeModal();
+                window.location.reload();
+            }, [])
+      }
       setSelectedOption('');
       closeModal();
     //   window.location.reload();
@@ -62,7 +75,6 @@ export default function GlobalReportForm() {
             className='modal'
             open={modalIsOpen} 
             onClose={closeModal} 
-            contentLabel="Form Modal"
             PaperProps={{
                 style: modalStyles,
               }}
@@ -74,6 +86,13 @@ export default function GlobalReportForm() {
             </div>
             :
 
+            subLoading ?
+
+            <div className="db-table form">
+                <BeatLoader color="#f50057" />
+            </div>
+
+            :
             <form className='db-table form-center form' onSubmit={handleSubmit}>
                 <h4>Create Global Report</h4>
                 <FormControl>
