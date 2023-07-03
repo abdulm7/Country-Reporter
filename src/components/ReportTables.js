@@ -12,6 +12,8 @@ function ReportTables() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalBody, setModalBody] = useState('')
     const [modalTitle, setModalTitle] = useState ('')
+    const [countryDelete, setCountryDelete] = useState(false)
+    const [globalDelete, setGlobalDelete] = useState(false)
 
 
     useEffect(() => {
@@ -37,6 +39,20 @@ function ReportTables() {
         setModalIsOpen(true)
       }
 
+    function deleteReport(fname, bucket){
+        if (bucket === 'cr-country-reports'){
+            setCountryDelete(true)
+        }else{
+            setGlobalDelete(true)
+        }
+        fetch(process.env.REACT_APP_API + '/DeleteReport?bucket=' + bucket + '&object=' + fname)
+        .then(res => res.json())
+        .then(data => {
+            alert(data)
+            window.location.reload();
+        })
+    }
+
     const closeModal = () => {
         setModalIsOpen(false);
     };
@@ -48,6 +64,11 @@ function ReportTables() {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden'
+      };
+
+      const deleteBtn = {
+        backgroundColor: '#D30000',
+        color: 'white',
       };
 
     return (
@@ -64,13 +85,14 @@ function ReportTables() {
                             <th>Report Name</th>
                             <th>Creation Date</th>
                             <th>Report</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     {loading ?
                         // <div className="db-table">
                         <tbody>
                             <tr>
-                                <td colSpan="3">
+                                <td colSpan="4">
 
                                     <div className='db-table'> <BeatLoader color="#f50057" /></div>
                                 </td>
@@ -80,7 +102,7 @@ function ReportTables() {
                         countryReports.length === 0 ?
                             <tbody>
                                 <tr>
-                                    <td colSpan="3">
+                                    <td colSpan="4">
                                         <h6>No Country Reports Have Been Generated</h6>
                                     </td>
                                 </tr>
@@ -89,6 +111,14 @@ function ReportTables() {
 
                             <tbody>
                                 {
+                                    countryDelete ?
+                                        <tr>
+                                            <td colSpan="4">
+            
+                                                <div className='db-table'> <BeatLoader color="#f50057" /></div>
+                                            </td>
+                                        </tr>
+                                    :
                                     countryReports.map((report, i) => (
                                         <tr key={i}>
                                             <td key={report.file}>{report['file']}</td>
@@ -98,6 +128,11 @@ function ReportTables() {
                                                 color='default'
                                                 onClick={() => openModal(report.body, report.file)}
                                             >View</Button> </td>
+                                            <td key={report.file + '-report'}><Button
+                                                variant="contained"
+                                                style={deleteBtn}
+                                                onClick={() => deleteReport(report.file, 'cr-country-reports')}
+                                            >Delete</Button> </td>
 
                                         </tr>
                                     ))
@@ -117,12 +152,13 @@ function ReportTables() {
                             <th>Report Name</th>
                             <th>Creation Date</th>
                             <th>Report</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     {loading ?
                         <tbody>
                             <tr>
-                                <td colSpan="3">
+                                <td colSpan="4">
 
                                     <div className='db-table'> <BeatLoader color="#f50057" /></div>
                                 </td>
@@ -132,7 +168,7 @@ function ReportTables() {
                         globalReports.length === 0 ?
                             <tbody>
                                 <tr>
-                                    <td colSpan="3">
+                                    <td colSpan="4">
                                         <h6>No Global Reports Have Been Generated</h6>
                                     </td>
                                 </tr>
@@ -141,6 +177,14 @@ function ReportTables() {
 
                             <tbody>
                                 {
+                                    globalDelete ?
+                                        <tr>
+                                            <td colSpan="4">
+            
+                                                <div className='db-table'> <BeatLoader color="#f50057" /></div>
+                                            </td>
+                                        </tr>
+                                    :
                                     globalReports.map((report, i) => (
                                         <tr key={i}>
                                             <td key={report.file}>{report['file']}</td>
@@ -149,7 +193,14 @@ function ReportTables() {
                                                 variant="contained"
                                                 color='default'
                                                 onClick={() => openModal(report.body, report.file)}
-                                            >View</Button> </td>
+                                            >View</Button> 
+                                            </td>
+                                            <td key={report.file + '-report'}><Button
+                                                variant="contained"
+                                                style={deleteBtn}
+                                                onClick={() => deleteReport(report.file, 'cr-global-reports')}
+                                            >Delete</Button> 
+                                            </td>
 
                                         </tr>
                                     ))
