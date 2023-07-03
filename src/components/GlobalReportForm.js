@@ -26,8 +26,8 @@ export default function GlobalReportForm() {
         alert("ERROR: You must select a contry to submit!")
       }else{
         setSubLoading(true)
-        let api = "https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/CreateGlobalReport?year="
-        fetch(api + selectedOption)
+        let endpoint = "CreateGlobalReport?year=" + selectedOption
+        fetch(process.env.REACT_APP_API + endpoint)
             .then(res => res.json())
             .then(data => {
                 setSelectedOption('');
@@ -46,7 +46,7 @@ export default function GlobalReportForm() {
     };
 
     useEffect(() => {
-        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/GetYears')
+        fetch(process.env.REACT_APP_API + 'GetYears')
         .then(res => res.json())
         .then(data => {
             setYears(data)

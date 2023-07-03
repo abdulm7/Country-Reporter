@@ -8,7 +8,7 @@ export default function EconTable() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=econ')
+        fetch(process.env.REACT_APP_API + 'DbRetrieve?table=econ')
         .then(res => res.json())
         .then(data => {
             setRecords(data['items'])

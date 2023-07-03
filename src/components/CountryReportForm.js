@@ -26,8 +26,8 @@ export default function CountryReportForm() {
             alert("ERROR: You must select a country to submit!")
         } else {
             setSubLoading(true)
-            var api = "https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/CreateCountryReport?country="
-            fetch(api + selectedOption)
+            let endpoint = "CreateCountryReport?country=" + selectedOption
+            fetch(process.env.REACT_APP_API + endpoint)
                 .then(res => res.json())
                 .then(data => {
                     setSelectedOption('');
@@ -46,7 +46,7 @@ export default function CountryReportForm() {
     };
 
     useEffect(() => {
-        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/JoinCountries')
+        fetch(process.env.REACT_APP_API + 'JoinCountries')
             .then(res => res.json())
             .then(data => {
                 setCountries(data)

@@ -15,14 +15,13 @@ function ReportTables() {
 
 
     useEffect(() => {
-        fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/GetReports')
+        fetch(process.env.REACT_APP_API + 'GetReports')
             .then(res => res.json())
             .then(data => {
                 setCountryReports(data['country'])
                 setGlobalReports(data['global'])
-                console.log(data)
                 setLoading(false)
-            })
+            }, [])
 
     }, [])
 

@@ -9,7 +9,7 @@ export default function NonEconTable() {
     const removedChars = /["[\]]/g;
 
       useEffect(() => {
-    fetch('https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/DbRetrieve?table=non-econ')
+    fetch(process.env.REACT_APP_API + 'DbRetrieve?table=non-econ')
     .then(res => res.json())
     .then(data => {
       setRecords(data['items'])
