@@ -1,3 +1,8 @@
+// Abdul Mahmoud
+// Country Reporter Web Application
+// AWS Cloud Native Application with React Front-end
+// Version 1.0, July 3, 2023
+
 import './App.css';
 import EconTable from './components/EconTable'
 import NonEconTable from './components/NonEconTable';
