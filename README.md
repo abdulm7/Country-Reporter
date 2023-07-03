@@ -1,6 +1,6 @@
 # Country Reporter a React and AWS Cloud Native Application
 
-## Avaliable at: [https://web-app.d2t1p3afrg3owy.amplifyapp.com/](url)
+## Avaliable at: https://web-app.d2t1p3afrg3owy.amplifyapp.com/
 
 ## A Full-stack web application written in JavaScript and Python, deployed on AWS Amplify
 
