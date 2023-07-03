@@ -25,7 +25,7 @@ export default function NonEconTable() {
 
     loading ?
 
-    <BeatLoader color="#36d7b7" />
+    <BeatLoader color="#f50057" />
     :
     <div className="db-table">
         <h3>Population & Non-Economic Table</h3>

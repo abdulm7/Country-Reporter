@@ -44,7 +44,7 @@ export default function GlobalReportForm() {
         
     }, [])
 
-  })
+  }, [])
 
   const modalStyles = {
     minWidth: 400, // Minimum width in pixels
@@ -53,8 +53,7 @@ export default function GlobalReportForm() {
 
   return (
 
-    
-        // <BeatLoader color="#36d7b7" />
+
 
     <div>
         <Button variant="contained" color="primary" onClick={openModal}>Create Global Report</Button>
@@ -71,7 +70,7 @@ export default function GlobalReportForm() {
             {loading ?
 
             <div className="db-table form">
-                <BeatLoader color="#36d7b7" />
+                <BeatLoader color="#f50057" />
             </div>
             :
 

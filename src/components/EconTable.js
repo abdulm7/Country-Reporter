@@ -21,7 +21,7 @@ export default function EconTable() {
 
     loading ?
     <div className="db-table">
-        <BeatLoader color="#36d7b7" />
+        <BeatLoader color="#f50057" />
     </div>
     :
     <div className="db-table">
