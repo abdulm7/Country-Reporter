@@ -35,9 +35,6 @@ export default function GlobalReportForm() {
                 window.location.reload();
             }, [])
       }
-      setSelectedOption('');
-      closeModal();
-    //   window.location.reload();
     };
 
     const openModal = () => {
