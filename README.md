@@ -1,8 +1,8 @@
 # Country Reporter a React and AWS Cloud Native Application
 
+=======
 ## This application solves the issue of storing information on a country and presenting that information in a meaningful manner
 ## Allowing users to generate concise reports that provide comprehensive summaries of country data either on a global scale for a specific year or on a country level for a particular country.
-
 ## A Full-stack web application written in JavaScript and Python, deployed on AWS Amplify
 
 * This web application allows users to generate and view reports based on a specific country or a specific year.
