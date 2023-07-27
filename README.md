@@ -1,7 +1,5 @@
 # Country Reporter a React and AWS Cloud Native Application
 
-## Avaliable at: https://web-app.d2t1p3afrg3owy.amplifyapp.com/
-
 ## A Full-stack web application written in JavaScript and Python, deployed on AWS Amplify
 
 * This web application allows users to generate and view reports based on a specific country or a specific year.
