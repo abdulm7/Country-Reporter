@@ -28,9 +28,10 @@
 * React front-end is hosted on AWS Amplify, however can be hosted where ever since it has no direct access to AWS
 * Check 'console-app' branch on DynamoDB structure 
 
-# Coming Soon/To Do
+# Upcoming Changes
+* Implement Infrastructure as code (Terraform)
+* CI/CD pipelines
 * Add/Delete from Database tables
 * Edit existing records
 * Create VPC with subnets for data protection
 * User Authentication
-* CI/CD pipelines
