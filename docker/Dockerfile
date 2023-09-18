@@ -4,6 +4,7 @@ COPY package.json .
 RUN npm install --force
 COPY . .
 RUN npm start
+RUN npm run build
 
 FROM nginx:1.19.0
 WORKDIR /usr/share/nginx/html
