@@ -3,7 +3,7 @@ name: Deploy to ECR
 on:
  
   push:
-    branches: [ master ]
+    branches: [ web-app ]
 
 env:
   ECR_REPOSITORY: countryreporter/frontend

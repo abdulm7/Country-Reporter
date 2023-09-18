@@ -2,6 +2,7 @@
 // Country Reporter Web Application
 // AWS Cloud Native Application with React Front-end
 // Version 1.0, July 3, 2023
+// Testing Automation
 
 import './App.css';
 import EconTable from './components/EconTable'
