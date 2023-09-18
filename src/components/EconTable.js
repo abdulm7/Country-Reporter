@@ -7,10 +7,13 @@ export default function EconTable() {
     const [gdpYears, setYears] = useState([])
     const [loading, setLoading] = useState(true)
 
+    console.log(process.env.REACT_APP_API + 'DbRetrieve?table=econ');
+
     useEffect(() => {
         fetch(process.env.REACT_APP_API + 'DbRetrieve?table=econ')
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             setRecords(data['items'])
             setYears(data.years)
             setLoading(false)
