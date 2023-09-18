@@ -3,7 +3,6 @@ WORKDIR /app
 COPY package.json .
 RUN npm install --force
 COPY . .
-RUN npm start
 RUN npm run build
 
 FROM nginx:1.19.0
