@@ -1,7 +1,8 @@
 FROM node:17-alpine as builder
 WORKDIR /app
 COPY package.json .
-RUN npm install
+COPY package-lock.json .
+RUN npm install --force
 COPY . .
 RUN npm build
 
