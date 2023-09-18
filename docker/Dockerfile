@@ -5,7 +5,7 @@ RUN npm install
 COPY . .
 RUN npm build
 
-FROM ngnx:1.19.0
+FROM nginx:1.19.0
 WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 COPY --from=builder /app/build .
