@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cr-frontend
+  labels:
+    app: cr-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cr-frontend
+  template:
+    metadata:
+      labels:
+        app: cr-frontend
+    spec:
+      containers:
+        - name: cr-frontend
+          image: 628909802592.dkr.ecr.ca-central-1.amazonaws.com/crfrontend:9ca1967
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
