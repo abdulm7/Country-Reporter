@@ -1,13 +1,28 @@
+# apiVersion: eksctl.io/v1alpha5
+# kind: ClusterConfig
+
+# metadata:
+#   name: cr-frntnd-cluster
+#   region: ca-central-1
+
+# managedNodeGroups:
+# - name: general
+#   instanceType: t2.small
+#   minSize: 3
+#   maxSize: 6
+#   spot: true
+
+---
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
-
 metadata:
-  name: cr-frntnd-cluster
+  name: frontend-cluster
   region: ca-central-1
 
 managedNodeGroups:
-- name: general
-  instanceType: t2.small
-  minSize: 3
-  maxSize: 6
-  spot: true
+- name: on-demand
+  labels:
+    role: on-demand
+  instanceType: t2.micro
+  desiredCapacity: 2
+  volumeSize: 20
