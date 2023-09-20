@@ -23,6 +23,6 @@ managedNodeGroups:
 - name: on-demand
   labels:
     role: on-demand
-  instanceType: t2.micro
+  instanceType: t3.micro
   desiredCapacity: 2
-  volumeSize: 20
+  spot: true

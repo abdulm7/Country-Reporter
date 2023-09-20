@@ -1,6 +1,9 @@
 # stage1 as builder
 FROM node:17-alpine as builder
 
+# Set environment variable
+ENV REACT_APP_API=$REACT_APP_API
+
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
 
