@@ -18,7 +18,7 @@ spec:
         app: nginx-webapp
     spec:
       containers:
-      - image: 628909802592.dkr.ecr.ca-central-1.amazonaws.com/frontend/web-app:DOCKER_IMAGE
+      - image: DOCKER_IMAGE
         name: webapp
         imagePullPolicy: Always
         resources: {}

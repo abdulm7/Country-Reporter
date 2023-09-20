@@ -16,7 +16,7 @@
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
-  name: frontend-cluster
+  name: cr-cluster
   region: ca-central-1
 
 managedNodeGroups:
