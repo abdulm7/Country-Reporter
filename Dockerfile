@@ -2,7 +2,7 @@
 FROM node:17-alpine as builder
 
 # Set environment variable
-ENV REACT_APP_API=$REACT_APP_API
+ENV REACT_APP_API=https://zrba2hfr19.execute-api.ca-central-1.amazonaws.com/default/
 
 # copy the package.json to install dependencies
 COPY package.json package-lock.json ./
