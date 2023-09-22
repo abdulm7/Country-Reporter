@@ -54,7 +54,7 @@ jobs:
         IMAGE_TAG: ${{ steps.commit.outputs.short }}
       run: |
         sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" manifests/cr-frontend-deployment.yaml && \
-        kubectl config set-context --current --namespace=frontend-namespace \ &&
+        kubectl config set-context --current --namespace=frontend-namespace && \ 
         kubectl delete deployments --all && \
         kubectl delete pod --all && \
         kubectl apply -f manifests/cr-frontend-deployment.yaml
