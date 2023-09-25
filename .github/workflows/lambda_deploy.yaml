@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - web-app
-    paths
+    paths:
       - 'backend/'
 
 
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.9' # Specify the Python version you need
-          
+
       # - name: Install dependencies
       #   run: pip install -r requirements.txt # If you have dependencies in requirements.txt
 
