@@ -26,7 +26,7 @@ export default function CountryReportForm() {
             alert("ERROR: You must select a country to submit!")
         } else {
             setSubLoading(true)
-            let endpoint = "CreateCountryReport?country=" + selectedOption
+            let endpoint = "CreateCountryReport&country=" + selectedOption
             fetch(process.env.REACT_APP_API + endpoint)
                 .then(res => res.json())
                 .then(data => {

@@ -26,7 +26,7 @@ export default function GlobalReportForm() {
         alert("ERROR: You must select a contry to submit!")
       }else{
         setSubLoading(true)
-        let endpoint = "CreateGlobalReport?year=" + selectedOption
+        let endpoint = "CreateGlobalReport&year=" + selectedOption
         fetch(process.env.REACT_APP_API + endpoint)
             .then(res => res.json())
             .then(data => {

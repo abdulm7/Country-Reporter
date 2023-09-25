@@ -45,7 +45,7 @@ function ReportTables() {
         }else{
             setGlobalDelete(true)
         }
-        fetch(process.env.REACT_APP_API + '/DeleteReport?bucket=' + bucket + '&object=' + fname)
+        fetch(process.env.REACT_APP_API + 'DeleteReport&bucket=' + bucket + '&object=' + fname)
         .then(res => res.json())
         .then(data => {
             alert(data)
