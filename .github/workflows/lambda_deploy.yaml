@@ -1,9 +1,10 @@
 name: Deploy to Lambda
 
 on:
+
   push:
-    branches: [web-app]
-    paths: [backend]
+    branches: [ web-app ]
+    paths: [ backend ]
 
 
 jobs:
