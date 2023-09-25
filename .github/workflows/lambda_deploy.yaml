@@ -2,10 +2,8 @@ name: Deploy to Lambda
 
 on:
   push:
-    branches:
-      - web-app
-    paths:
-      - backend
+    branches: [web-app]
+    paths: [backend]
 
 
 jobs:
@@ -26,14 +24,14 @@ jobs:
 
       - name: Create deployment package
         run: |
-          zip -r deployment_package.zip *.py
+          zip -r deployment_package.zip backend/*.py
 
       - name: Deploy to Lambda
         uses: einaregilsson/lambda-deploy@v1
         with:
-          function-name: your-lambda-function-name
+          function-name: cr-backend
           package: deployment_package.zip
-          region: your-aws-region
+          region: ca-central-1
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
