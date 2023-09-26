@@ -19,7 +19,7 @@ function App() {
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"></link>
       <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
-      <h1>Country Reporter V1.4</h1>
+      <h1>Country Reporter V1.4.1</h1>
 
       <ReportTables/>
       <EconTable />
