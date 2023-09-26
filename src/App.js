@@ -1,7 +1,9 @@
 // Abdul Mahmoud
 // Country Reporter Web Application
 // AWS Cloud Native Application with React Front-end
-// Version 1.0, July 3, 2023
+// Initial: July 3, 2023
+// Last updated: Sept 26,2023
+// Version 1.1.0
 // Testing Automation
 
 import './App.css';
