@@ -4,7 +4,7 @@
 // Initial: July 3, 2023
 // Last updated: Sept 26,2023
 // Version 1.1.0
-// Testing Automation
+// CI/CD pipelines complete for both EKS and Lambda
 
 import './App.css';
 import EconTable from './components/EconTable'
