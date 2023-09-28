@@ -158,7 +158,6 @@ resource "aws_subnet" "cr_subnet_priv2" {
   }
 }
 
-
 resource "aws_subnet" "cr_subnet_priv3" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.160.0/19"
@@ -254,9 +253,6 @@ resource "aws_route_table" "priv_ca1d_rt" {
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
   }
 }
-
-
-
 
 ### Route Table Associations ###
 
