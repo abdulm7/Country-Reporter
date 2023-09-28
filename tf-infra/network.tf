@@ -162,3 +162,76 @@ resource "aws_subnet" "cr_subnet_priv3" {
 }
 
 ### Route Tables ###
+
+resource "aws_route_table" "public_rt" {
+  vpc_id = aws_vpc.cr-vpc.id
+
+  tags = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PublicRouteTable"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+  tags_all = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PublicRouteTable"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+}
+
+resource "aws_route_table" "priv_ca1a_rt" {
+  vpc_id = aws_vpc.cr-vpc.id
+  tags = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1A"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+  tags_all = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1A"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+}
+
+resource "aws_route_table" "priv_ca1b_rt" {
+  vpc_id = aws_vpc.cr-vpc.id
+  tags = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1B"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+  tags_all = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1B"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+}
+
+resource "aws_route_table" "priv_ca1d_rt" {
+  vpc_id = aws_vpc.cr-vpc.id
+  tags = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1D"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+  tags_all = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/PrivateRouteTableCACENTRAL1D"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+}
