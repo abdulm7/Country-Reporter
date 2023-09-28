@@ -260,7 +260,34 @@ resource "aws_route_table" "priv_ca1d_rt" {
 
 ### Route Table Associations ###
 
-# resource "aws_route_table_association" "pub1_rt-assoc" {
-#   subnet_id      = aws_subnet.cr_subnet_public1.id
-#   route_table_id = aws_route_table.bar.id
-# }
+# public route table associations
+resource "aws_route_table_association" "pub1_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_public1.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+resource "aws_route_table_association" "pub2_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_public2.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+resource "aws_route_table_association" "pub3_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_public3.id
+  route_table_id = aws_route_table.public_rt.id
+}
+
+# private route table associations
+resource "aws_route_table_association" "priv1_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_priv1.id
+  route_table_id = aws_route_table.priv_ca1a_rt.id
+}
+
+resource "aws_route_table_association" "priv2_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_priv2.id
+  route_table_id = aws_route_table.priv_ca1b_rt.id
+}
+
+resource "aws_route_table_association" "priv3_rt-assoc" {
+  subnet_id      = aws_subnet.cr_subnet_priv3.id
+  route_table_id = aws_route_table.priv_ca1d_rt.id
+}
