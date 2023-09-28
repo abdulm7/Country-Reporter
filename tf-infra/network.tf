@@ -28,6 +28,25 @@ resource "aws_vpc" "cr-vpc" {
   }
 }
 
+resource "aws_internet_gateway" "cr-igw" {
+  vpc_id = aws_vpc.cr-vpc.id
+
+  tags = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/InternetGateway"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+  tags_all = {
+    "Name"                                        = "eksctl-cr-cluster-cluster/InternetGateway"
+    "alpha.eksctl.io/cluster-name"                = "cr-cluster"
+    "alpha.eksctl.io/cluster-oidc-enabled"        = "false"
+    "alpha.eksctl.io/eksctl-version"              = "0.157.0"
+    "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
+  }
+}
+
 ### Subnets ###
 
 resource "aws_subnet" "cr_subnet_public1" {
@@ -235,3 +254,13 @@ resource "aws_route_table" "priv_ca1d_rt" {
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
   }
 }
+
+
+
+
+### Route Table Associations ###
+
+# resource "aws_route_table_association" "pub1_rt-assoc" {
+#   subnet_id      = aws_subnet.cr_subnet_public1.id
+#   route_table_id = aws_route_table.bar.id
+# }
