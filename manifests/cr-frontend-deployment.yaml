@@ -24,7 +24,7 @@ spec:
         imagePullPolicy: Always
         resources: {}
         ports:
-          - containerPort: 80 
+          - containerPort: 8080
 status: {}
 
 ---
@@ -38,7 +38,9 @@ metadata:
     run: nginx-webapp
 spec:
   ports:
-  - port: 80
+  - name: nginxport
+    nodePort: 3000
+  - port: 8080
     protocol: TCP
   selector:
     app: nginx-webapp

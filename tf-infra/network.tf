@@ -26,6 +26,7 @@ resource "aws_vpc" "cr-vpc" {
     "alpha.eksctl.io/eksctl-version"              = "0.157.0"
     "eksctl.cluster.k8s.io/v1alpha1/cluster-name" = "cr-cluster"
   }
+
 }
 
 resource "aws_internet_gateway" "cr-igw" {
@@ -53,6 +54,8 @@ resource "aws_subnet" "cr_subnet_public1" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.32.0/19"
 
+  availability_zone = "ca-central-1a"
+
   map_public_ip_on_launch = true
   tags = {
     "Name"                                        = "cr-subnet-public1"
@@ -75,6 +78,8 @@ resource "aws_subnet" "cr_subnet_public2" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.0.0/19"
 
+  availability_zone = "ca-central-1b"
+
   map_public_ip_on_launch = true
   tags = {
     "Name"                                        = "cr_subnet_public2"
@@ -96,6 +101,8 @@ resource "aws_subnet" "cr_subnet_public2" {
 resource "aws_subnet" "cr_subnet_public3" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.64.0/19"
+
+  availability_zone = "ca-central-1d"
 
   map_public_ip_on_launch = true
   tags = {
@@ -120,6 +127,8 @@ resource "aws_subnet" "cr_subnet_priv1" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.128.0/19"
 
+  availability_zone = "ca-central-1a"
+
   tags = {
     "Name"                                        = "cr_subnet_priv1"
     "alpha.eksctl.io/cluster-name"                = "cr-cluster"
@@ -141,6 +150,8 @@ resource "aws_subnet" "cr_subnet_priv2" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.96.0/19"
 
+  availability_zone = "ca-central-1b"
+
   tags = {
     "Name"                                        = "cr_subnet_priv2"
     "alpha.eksctl.io/cluster-name"                = "cr-cluster"
@@ -161,6 +172,8 @@ resource "aws_subnet" "cr_subnet_priv2" {
 resource "aws_subnet" "cr_subnet_priv3" {
   vpc_id     = aws_vpc.cr-vpc.id
   cidr_block = "192.168.160.0/19"
+
+  availability_zone = "ca-central-1d"
 
   tags = {
     "Name"                                        = "cr_subnet_priv3"
