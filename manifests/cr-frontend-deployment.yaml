@@ -39,7 +39,6 @@ metadata:
 spec:
   ports:
   - name: nginxport
-    nodePort: 3000
   - port: 8080
     protocol: TCP
   selector:
