@@ -1,5 +1,5 @@
 # stage1 as builder
-FROM node:17-alpine as builder
+FROM node:18-alpine as builder
 
 ARG REACT_APP_API
 
