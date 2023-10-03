@@ -6,7 +6,6 @@
 // Version 1.1.0
 // CI/CD pipelines complete for both EKS and Lambda
 
-
 import './App.css';
 import EconTable from './components/EconTable'
 import NonEconTable from './components/NonEconTable';
