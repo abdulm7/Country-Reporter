@@ -12,7 +12,6 @@ import EconTable from './components/EconTable'
 import NonEconTable from './components/NonEconTable';
 import ReportTables from './components/ReportTables';
 
-
 function App() {
 
   return (
