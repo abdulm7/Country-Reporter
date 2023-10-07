@@ -8,7 +8,7 @@ on:
 
 env:
   ECR_REPOSITORY: frontend/web-app
-  EKS_CLUSTER_NAME: frntnd-cluster
+  EKS_CLUSTER_NAME: cr-cluster
   AWS_REGION: ca-central-1
 
 jobs:
