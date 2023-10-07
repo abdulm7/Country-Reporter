@@ -10,7 +10,7 @@ ENV REACT_APP_API=$REACT_APP_API
 COPY package.json package-lock.json ./
 
 # Install the dependencies and make the folder
-RUN npm install --force && mkdir /react-ui && mv ./node_modules ./react-ui
+RUN npm install --legacy-peer-deps && mkdir /react-ui && mv ./node_modules ./react-ui
 
 WORKDIR /react-ui
 
