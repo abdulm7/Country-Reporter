@@ -18,7 +18,7 @@ module "vpc" {
   enable_dns_support   = true
 
   tags = {
-    Terraform = "true"
+    Terraform   = "true"
     Environment = "dev"
   }
 }
