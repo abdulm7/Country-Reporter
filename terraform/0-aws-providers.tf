@@ -1,5 +1,5 @@
 provider "aws" {
-    region = "ca-central-1"
+  region = "ca-central-1"
 }
 
 
@@ -13,8 +13,8 @@ terraform {
     }
 
     helm = {
-        source = "hashicorp/helm"
-        version = ">= 2.6.0"
+      source  = "hashicorp/helm"
+      version = ">= 2.6.0"
     }
   }
 }
