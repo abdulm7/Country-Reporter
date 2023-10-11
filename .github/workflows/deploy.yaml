@@ -1,7 +1,6 @@
 name: Deploy to EKS
 
 on:
- 
   push:
     branches: [ master ]
     paths: [public/*, src/*, .github/workflows/deploy.yaml]
