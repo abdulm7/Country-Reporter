@@ -6,6 +6,14 @@ provider "aws" {
 terraform {
   required_version = "~> 1.0"
 
+  backend "remote" {
+    organization = "AM-ORG"
+    workspaces {
+      name = "Country-Reporter"
+    }
+    
+  }
+
   required_providers {
     kubectl = {
       source  = "gavinbunney/kubectl"
