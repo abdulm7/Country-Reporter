@@ -11,7 +11,7 @@ terraform {
     workspaces {
       name = "Country-Reporter"
     }
-    
+
   }
 
   required_providers {
