@@ -6,6 +6,7 @@ module "eks" {
   cluster_version = "1.25"
 
   cluster_endpoint_private_access = true
+  # remove public access
   cluster_endpoint_public_access  = true
 
   vpc_id     = module.vpc.vpc_id
