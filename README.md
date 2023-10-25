@@ -1,37 +1,19 @@
-# Country Reporter a React and AWS Cloud Native Application
+# Country Reporter
+A web app that leverages AWS's services to manage country data and create comprehensive reports within a Country and Global Scope
 
-## This application solves the issue of storing information on a country and presenting that information in a meaningful manner
-## Allowing users to generate concise reports that provide comprehensive summaries of country data either on a global scale for a specific year or on a country level for a particular country.
-## A Full-stack web application written in JavaScript and Python, deployed on AWS Amplify
+# Tech Stack
+ - React.js (Frontend)
+ - Python (Backend) 
+ - Terraform (IaC)
+ - Docker (Container)
+ - YAML (CI/CD)
+ - AWS (Services used):
+   - EKS
+   - DynamoDB
+   - VPC
+   - Lambda
+   - S3
+   - IAM
 
-* This web application allows users to generate and view reports based on a specific country or a specific year.
-* Reports are created in the Lambda backend, which then stores these reports in their respective s3 buckets.
-* Users may then view all generated reports via the 'view' button in the reports table
-* The reports table and raw database tables will be retrieved on load
-* Users may delete reports from S3
-
-#  Architecture Diagram
-![CountryReporterArchitectureDiagram](https://github.com/abdulm7/Country-Reporter/assets/46537861/0367b775-ea35-403e-9d50-2d9b9928b443)
-
-# How to Run
-
-* install dependencies via "npm run-script build"
-* each python script with the prefix "lambda_" is backend code for each lambda function required
-* all lambda functions must be on the same API url to utilize the same env variable
-  * Feel free to use mutliple, just note you will need to update your env file + api request
-* NOTE the endpoint is the name of the lambda function
-  * e.g. "lambda_GetReports" has API call (process.env.REACT_APP_API + "/GetReports")
-  * Note that most lambda functions require query string parameters e.g. "/CreateCountryReport?country=Canada"
-* Ensure you give lambda functions appropriate roles via IAM Roles e.g. 
-  * "GetReports" has read only access to S3
-  * "DbRetrieve" has read only access to DynamoDB
-* React front-end is hosted on AWS Amplify, however can be hosted where ever since it has no direct access to AWS
-* Check 'console-app' branch on DynamoDB structure 
-
-# Upcoming Changes
-* Implement Infrastructure as code (Terraform)
-* CI/CD pipelines
-* Add/Delete from Database tables
-* Edit existing records
-* Create VPC with subnets for data protection
-* User Authentication
+ # Example Running 
+ ![CountryReporterGIF](https://github.com/abdulm7/Country-Reporter/assets/46537861/46c741b1-efc5-4506-ac7f-32a996a13ec0)
