@@ -46,7 +46,8 @@ export default function CountryReportForm() {
     };
 
     useEffect(() => {
-        fetch(process.env.REACT_APP_API + 'JoinCountries')
+        console.log(process.env.REACT_APP_API)
+        fetch(process.env.REACT_APP_API + 'JoinCountries',)
             .then(res => res.json())
             .then(data => {
                 setCountries(data)
